@@ -65,14 +65,15 @@ class Battleships():
 		self.exit_hover = pygame.image.load("Assets/Grafika/exit_hover.png").convert_alpha()
 		self.exit_button = button.Button(408, 735, self.exit_no_hover, self.exit_hover, 1)
 
-		self.x_back_button = 20
+		self.x_back_button = 20 #TODO: change placement of back button and possibly size?
 		self.y_back_button = 20
 		self.back_no_hover = pygame.image.load("Assets/Grafika/back_no_hover.png").convert_alpha()
 		self.back_hover = pygame.image.load("Assets/Grafika/back_hover.png").convert_alpha()
-		self.back_button = button.Button(self.x_back_button, self.y_back_button, self.back_no_hover, self.back_hover, 1)
+		self.back_button = button.Button(self.x_back_button, self.y_back_button, self.back_no_hover, self.back_hover, 0.4)
 
 		# GAME LOADERS
-		self.hit_sprite = pygame.image.load("Assets/Grafika/hit_sprite.png")	
+		self.hit_sprite = pygame.image.load("Assets/Grafika/hit_sprite.png").convert_alpha()
+		self.aim = pygame.image.load('C:/Repo/Battleshipz/Assets/Grafika/aim.png').convert_alpha()
 		####################################################### LOADERS #######################################################
 
 		# FIXME: Nie działa dynamiczne skalowanie, dodać skalowanie ładowanek obrazka i pozycjonowanie względem domyślnej rozdzielczości
@@ -159,8 +160,8 @@ class Battleships():
 						plansza_1.append([])
 						plansza_2.append([])
 						for y in range(0,10):
-							plansza_1[x].append(2)
-							plansza_2[x].append(1)
+							plansza_1[x].append(2) # FIXME: Change to 0
+							plansza_2[x].append(1) # FIXME: Change to 0
 							# print(f"x:{x}, y: {y}")
 					for x in range(0,10):
 						for y in range(0,10):
@@ -176,6 +177,7 @@ class Battleships():
 			if self.options_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 				self.obraz.blit(self.options, self.options.get_rect())
 				options_loop = True
+				# OPTIONS LOOP
 				while options_loop is True:
 					if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						options_loop = False
@@ -184,6 +186,7 @@ class Battleships():
 						pygame.quit()
 						sys.exit()
 					self.screen_refresh()
+				# OPTIONS LOOP
 			# # PRZYCISK OPTIONS
 
         	# # PRZYCISK CREDITS
