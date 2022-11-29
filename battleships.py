@@ -13,6 +13,10 @@ class Battleships():
 		self.fps = 60
 		frame_height = 224
 		self.frame_scale = 1.142857142857143
+		# KORDYNATY ZEROWE LEWEGO GÓRNEGO ROGU PLANSZY_1
+		# X: 66 Y: 258 każde przesunięcie o x: 38 i y: 38
+		# KORDYNATY ZEROWE LEWEGO GÓRNEGO ROGU PLANSZY_2
+		# X: 578 Y: 258 każde przesunięcie o x: 38 i y: 38
 
 		pygame.init()
 
@@ -130,25 +134,41 @@ class Battleships():
 			# PRZYCISK GRAJ
 			if self.play_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 				self.obraz.blit(self.tloPrzygotowan, self.tloPrzygotowan.get_rect())
-				self.obraz.blit(self.hit_sprite, Rect(142, 296, 38, 38), Rect(1 * 38, 0, 38, 38)) #TODO: wyświeltanie wielu przycisków używając .blits
+				## KORDYNATY ZEROWE LEWEGO GÓRNEGO ROGU PLANSZY
+				# X: 66 Y: 258 każde przesunięcie o x: 38 i y: 38
+				# KORDYNATY ZEROWE LEWEGO GÓRNEGO ROGU PLANSZY
+				# X: 578 Y: 258 każde przesunięcie o x: 38 i y: 38
+
 				self.screen_refresh()
 				#FIXME: potencjalny problem, jak włączymy grę i wrócimy to czy zostawić ustawienie gracza ale wyzerować ustawienie AI?
 				preparation_loop = True 
 				while preparation_loop is True:
+					# PRZYCISKI
 					if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						preparation_loop = False
+
 					if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						print("Thanks for playing!")
 						pygame.quit()
 						sys.exit()
-					
+					# PRZYCISKI
+					# GAME PREPARATION
+					plansza_1 = []
+					plansza_2 = []
+					for x in range(0,10):
+						plansza_1.append([])
+						plansza_2.append([])
+						for y in range(0,10):
+							plansza_1[x].append(2)
+							plansza_2[x].append(1)
+							# print(f"x:{x}, y: {y}")
+					for x in range(0,10):
+						for y in range(0,10):
+							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(plansza_1[x][y] * 38, 0, 38, 38))
+							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(plansza_2[x][y] * 38, 0, 38, 38))
+
+					# GAME PREPARATION
 					self.screen_refresh()
-					# for i in range(0, 2):
-					# 	self.obraz.blit(self.introSprite, Rect(192, 352, 608, 320), Rect( i * 320, 0, 608, 320))	
-					# 	if not self.wait_or_skip(32):
-					# 		return
-					# if not self.wait_or_skip(180):
-					# 	return					
 				# PREPARATION PHASE
 			# PRZYCISK GRAJ
 
@@ -204,6 +224,15 @@ class Battleships():
 			self.screen_refresh()
 		
 		return True
+
+	def populateStatus():
+		status = []
+		status.append([])
+		for x in range (0,4):
+			for y in range (0,4):
+				status[x].append(0)
+		print(status)
+		
 
 def Main():
 	battleships = Battleships()
