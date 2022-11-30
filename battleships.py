@@ -13,6 +13,7 @@ class Battleships():
 		self.fps = 60
 		frame_height = 224
 		self.frame_scale = 1.142857142857143
+		
 		# KORDYNATY ZEROWE LEWEGO GÓRNEGO ROGU PLANSZY_1
 		# X: 66 Y: 258 każde przesunięcie o x: 38 i y: 38
 		# KORDYNATY ZEROWE LEWEGO GÓRNEGO ROGU PLANSZY_2
@@ -74,6 +75,15 @@ class Battleships():
 		# GAME LOADERS
 		self.hit_sprite = pygame.image.load("Assets/Grafika/hit_sprite.png").convert_alpha()
 		self.aim = pygame.image.load('C:/Repo/Battleshipz/Assets/Grafika/aim.png').convert_alpha()
+
+		self.plansza_1 = []
+		self.plansza_2 = []
+		for x in range(0,10):
+			self.plansza_1.append([])
+			self.plansza_2.append([])
+			for y in range(0,10):
+				self.plansza_1[x].append(0) # FIXME: Change to 0
+				self.plansza_2[x].append(0) # FIXME: Change to 0
 		####################################################### LOADERS #######################################################
 
 		# FIXME: Nie działa dynamiczne skalowanie, dodać skalowanie ładowanek obrazka i pozycjonowanie względem domyślnej rozdzielczości
@@ -154,19 +164,30 @@ class Battleships():
 						sys.exit()
 					# PRZYCISKI
 					# GAME PREPARATION
-					plansza_1 = []
-					plansza_2 = []
+					# plansza_1 = []
+					# plansza_2 = []
+					# for x in range(0,10):
+					# 	plansza_1.append([])
+					# 	plansza_2.append([])
+					# 	for y in range(0,10):
+					# 		plansza_1[x].append(0) # FIXME: Change to 0
+					# 		plansza_2[x].append(0) # FIXME: Change to 0
+					# 		# print(f"x:{x}, y: {y}")
 					for x in range(0,10):
-						plansza_1.append([])
-						plansza_2.append([])
 						for y in range(0,10):
-							plansza_1[x].append(0) # FIXME: Change to 0
-							plansza_2[x].append(0) # FIXME: Change to 0
-							# print(f"x:{x}, y: {y}")
-					for x in range(0,10):
-						for y in range(0,10):
-							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(plansza_1[x][y] * 38, 0, 38, 38))
-							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(plansza_2[x][y] * 38, 0, 38, 38))
+							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(self.plansza_1[x][y] * 38, 0, 38, 38))
+							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.plansza_2[x][y] * 38, 0, 38, 38))
+					if pygame.mouse.get_pressed()[0] == 1:
+						mouse_pos_1 = pygame.mouse.get_pos()
+						for x in range(0,10):
+							for y in range(0,10):
+								# print(mouse_pos_1)
+								check_pos = Rect(x * 38 + 578, y * 38 + 258, 38, 38)
+								if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True:
+									print(f"x: {x}| y: {y}")
+									self.plansza_2[x][y] = 1
+
+
 
 					# GAME PREPARATION
 					self.screen_refresh()
@@ -180,7 +201,6 @@ class Battleships():
 				# OPTIONS LOOP
 				while options_loop is True:
 					if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
-						print(pygame.back_button.center)
 						options_loop = False
 					if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						print("Thanks for playing!")
@@ -197,10 +217,16 @@ class Battleships():
 				self.screen_refresh()
 				credits_loop = True
 				while credits_loop is True:
+					if pygame.mouse.get_pressed()[0] == 1:
+						mouse_pos_1 = pygame.mouse.get_pos()
+						print(mouse_pos_1)
 					if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						credits_loop = False
 					if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						print("Thanks for playing!")
+						# mouse_pos_1 = pygame.mouse.get_pos()
+						# print(mouse_pos_1[0])
+						# print(mouse_pos_1[1])
 						pygame.quit()
 						sys.exit()
 					self.screen_refresh()
