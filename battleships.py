@@ -160,8 +160,8 @@ class Battleships():
 						plansza_1.append([])
 						plansza_2.append([])
 						for y in range(0,10):
-							plansza_1[x].append(2) # FIXME: Change to 0
-							plansza_2[x].append(1) # FIXME: Change to 0
+							plansza_1[x].append(0) # FIXME: Change to 0
+							plansza_2[x].append(0) # FIXME: Change to 0
 							# print(f"x:{x}, y: {y}")
 					for x in range(0,10):
 						for y in range(0,10):
@@ -180,6 +180,7 @@ class Battleships():
 				# OPTIONS LOOP
 				while options_loop is True:
 					if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+						print(pygame.back_button.center)
 						options_loop = False
 					if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						print("Thanks for playing!")
