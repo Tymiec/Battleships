@@ -1,3 +1,4 @@
+import random
 import pygame
 import time #TODO: usunąć jak nie będą potrzebne sleepy do sprawdzania klatek
 from pygame.locals import *
@@ -54,6 +55,10 @@ class Battleships():
 		self.play_hover = pygame.image.load("Assets/Grafika/play_hover.png").convert_alpha()
 		self.play_button = button.Button(398, 385, self.play_no_hover, self.play_hover, 1)
 
+		self.start_no_hover = pygame.image.load("Assets/Grafika/start_no_hover.png").convert_alpha()
+		self.start_hover = pygame.image.load("Assets/Grafika/start_hover.png").convert_alpha()
+		self.start_button = button.Button(369, 680, self.start_no_hover, self.start_hover, 1)
+
 		self.options_no_hover = pygame.image.load("Assets/Grafika/options_no_hover.png").convert_alpha()
 		self.options_hover = pygame.image.load("Assets/Grafika/options_hover.png").convert_alpha()
 		self.options_button = button.Button(319, 485, self.options_no_hover, self.options_hover, 1)
@@ -74,16 +79,26 @@ class Battleships():
 
 		# GAME LOADERS
 		self.hit_sprite = pygame.image.load("Assets/Grafika/hit_sprite.png").convert_alpha()
+		# self.hit_sprite_rotate = pygame.transform.rotozoom(self.hit_sprite, 45, 1)
 		self.aim = pygame.image.load('C:/Repo/Battleshipz/Assets/Grafika/aim.png').convert_alpha()
 
-		self.plansza_1 = []
-		self.plansza_2 = []
+		self.plansza_trafien_1 = []
+		self.plansza_trafien_2 = []
+		
+		self.plansza_statkow_1 = []
+		self.plansza_statkow_2 = []
 		for x in range(0,10):
-			self.plansza_1.append([])
-			self.plansza_2.append([])
+			self.plansza_trafien_1.append([])
+			self.plansza_trafien_2.append([])
+
+			self.plansza_statkow_1.append([])
+			self.plansza_statkow_2.append([])
 			for y in range(0,10):
-				self.plansza_1[x].append(0) # FIXME: Change to 0
-				self.plansza_2[x].append(0) # FIXME: Change to 0
+				self.plansza_trafien_1[x].append(0) # FIXME: Change to 0
+				self.plansza_trafien_2[x].append(0) # FIXME: Change to 0
+
+				self.plansza_statkow_1[x].append(0) # FIXME: Change to 0
+				self.plansza_statkow_2[x].append(0) # FIXME: Change to 0
 		####################################################### LOADERS #######################################################
 
 		# FIXME: Nie działa dynamiczne skalowanie, dodać skalowanie ładowanek obrazka i pozycjonowanie względem domyślnej rozdzielczości
@@ -133,8 +148,8 @@ class Battleships():
 	
 	def Menu(self):
 
-		pygame.mixer.music.load("Assets/Dzwiek/drunken_sailor_8_bit.ogg") # TODO:przyciszyć o 50%
-		pygame.mixer.music.play(-1)
+		# pygame.mixer.music.load("Assets/Dzwiek/drunken_sailor_8_bit.ogg") # TODO:przyciszyć o 50%
+		# pygame.mixer.music.play(-1)
 		
 		self.screen_refresh()
 		
@@ -155,7 +170,14 @@ class Battleships():
 				preparation_loop = True 
 				while preparation_loop is True:
 					# PRZYCISKI
+					# GAME LOOP
+					if self.start_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+						game_loop = True
+						while game_loop is True:
+							print("essa")
+					# GAME LOOP
 					if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+						self.clean_boards()
 						preparation_loop = False
 
 					if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
@@ -163,32 +185,23 @@ class Battleships():
 						pygame.quit()
 						sys.exit()
 					# PRZYCISKI
-					# GAME PREPARATION
-					# plansza_1 = []
-					# plansza_2 = []
-					# for x in range(0,10):
-					# 	plansza_1.append([])
-					# 	plansza_2.append([])
-					# 	for y in range(0,10):
-					# 		plansza_1[x].append(0) # FIXME: Change to 0
-					# 		plansza_2[x].append(0) # FIXME: Change to 0
-					# 		# print(f"x:{x}, y: {y}")
+					# GAME PREPARATION #TODO: add play button
 					for x in range(0,10):
 						for y in range(0,10):
-							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(self.plansza_1[x][y] * 38, 0, 38, 38))
-							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.plansza_2[x][y] * 38, 0, 38, 38))
+							# test_fog_of_war = random.randint(4,6)
+							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(self.plansza_statkow_1[x][y] * 38, 0, 38, 38))
+							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.plansza_statkow_2[x][y] * 38, 0, 38, 38)) # TODO:add fog of war
+					# HIT REGISTER
 					if pygame.mouse.get_pressed()[0] == 1:
 						mouse_pos_1 = pygame.mouse.get_pos()
 						for x in range(0,10):
 							for y in range(0,10):
 								# print(mouse_pos_1)
-								check_pos = Rect(x * 38 + 578, y * 38 + 258, 38, 38)
-								if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True:
-									print(f"x: {x}| y: {y}")
-									self.plansza_2[x][y] = 1
-
-
-
+								check_pos = Rect(x * 38 + 66, y * 38 + 258, 38, 38)
+								if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True and self.plansza_statkow_1[x][y] != 3:
+									print(f"Add ship to player board on x: {x}| y: {y}")
+									self.plansza_statkow_1[x][y] = 3 # zmiana kwadratu na statek
+					# HIT REGISTER
 					# GAME PREPARATION
 					self.screen_refresh()
 				# PREPARATION PHASE
@@ -262,7 +275,32 @@ class Battleships():
 			for y in range (0,4):
 				status[x].append(0)
 		print(status)
-		
+
+	def rotate(self):
+		self.image = pygame.transform.rotozoom(self.orig_image, self.angle, 1)
+		self.rect = self.image.get_rect(center=self.rect.center)
+
+	def update(self):
+		self.angle += 10
+		self.rotate()
+
+	def clean_boards(self):
+		self.plansza_trafien_1 = []
+		self.plansza_trafien_2 = []
+		self.plansza_statkow_1 = []
+		self.plansza_statkow_2 = []
+		for x in range(0,10):
+			self.plansza_trafien_1.append([])
+			self.plansza_trafien_2.append([])
+
+			self.plansza_statkow_1.append([])
+			self.plansza_statkow_2.append([])
+			for y in range(0,10):
+				self.plansza_trafien_1[x].append(0)
+				self.plansza_trafien_2[x].append(0)
+
+				self.plansza_statkow_1[x].append(0)
+				self.plansza_statkow_2[x].append(0)
 
 def Main():
 	battleships = Battleships()
