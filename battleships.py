@@ -82,6 +82,8 @@ class Battleships():
 		# self.hit_sprite_rotate = pygame.transform.rotozoom(self.hit_sprite, 45, 1)
 		self.aim = pygame.image.load('C:/Repo/Battleshipz/Assets/Grafika/aim.png').convert_alpha()
 
+		self.place_player_ship_counter = 0
+
 		self.plansza_trafien_1 = []
 		self.plansza_trafien_2 = []
 		
@@ -198,9 +200,11 @@ class Battleships():
 							for y in range(0,10):
 								# print(mouse_pos_1)
 								check_pos = Rect(x * 38 + 66, y * 38 + 258, 38, 38)
-								if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True and self.plansza_statkow_1[x][y] != 3:
+								if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True and self.plansza_statkow_1[x][y] != 3 and self.place_player_ship_counter < 20:
 									print(f"Add ship to player board on x: {x}| y: {y}")
 									self.plansza_statkow_1[x][y] = 3 # zmiana kwadratu na statek
+									self.place_player_ship_counter += 1 
+									print(f"Ships placed by player: {self.place_player_ship_counter}")
 					# HIT REGISTER
 					# GAME PREPARATION
 					self.screen_refresh()
@@ -289,6 +293,7 @@ class Battleships():
 		self.plansza_trafien_2 = []
 		self.plansza_statkow_1 = []
 		self.plansza_statkow_2 = []
+		self.place_player_ship_counter = 0
 		for x in range(0,10):
 			self.plansza_trafien_1.append([])
 			self.plansza_trafien_2.append([])
