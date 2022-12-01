@@ -307,6 +307,28 @@ class Battleships():
 				self.plansza_statkow_1[x].append(0)
 				self.plansza_statkow_2[x].append(0)
 
+	def generate_ai_board(self):
+		# statki = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+		random_x = -1
+		random_y = -1
+
+		for x in range(20):
+			not_different = True
+			while not_different: # random generating coordinate until we find a free spot
+				random_x = random.randint(0,9)
+				random_y = random.randint(0,9)
+				if self.plansza_statkow_2[random_x][random_y] != 3 and self.plansza_statkow_2[random_x][random_y] != 2:
+					not_different = False
+			if self.plansza_statkow_2[random_x][random_y] != 3: # sprawdzamy czy nie stawiamy na statku FIXME: chyba zbędny?
+				self.plansza_statkow_2[random_x][random_y] = 3 #dodajemy statek		
+				# print(f"pepega {x}")
+				# print(f"Generating computer ship no {x+1}")
+				# for i in statki[x]:
+				# 	print("EZ")
+				# 	print(self.plansza_statkow_2)
+
+
+
 def Main():
 	battleships = Battleships()
 	battleships.Start()
