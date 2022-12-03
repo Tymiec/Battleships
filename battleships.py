@@ -156,8 +156,8 @@ class Battleships():
 	
 	def Menu(self):
 
-		# pygame.mixer.music.load("Assets/Dzwiek/drunken_sailor_8_bit.ogg") # TODO:przyciszyć o 50%
-		# pygame.mixer.music.play(-1)
+		pygame.mixer.music.load("Assets/Dzwiek/drunken_sailor_8_bit.ogg") # TODO:przyciszyć o 50%
+		pygame.mixer.music.play(-1)
 		
 		self.screen_refresh()
 		
@@ -179,7 +179,7 @@ class Battleships():
 				self.computer_move = False
 				while preparation_loop is True:
 					# PRZYCISKI
-					# GAME LOOP
+					# GAME LOOP START
 					if self.generation_counter == 0:
 						self.Generate_ai_board()
 						self.generation_counter = 1
@@ -187,16 +187,12 @@ class Battleships():
 						game_loop = True
 						while game_loop is True: # TODO: 
 							if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
-								# game_loop = False
-								self.Computer_targeting()
+								game_loop = False
+								# self.screen_refresh() 
+								# self.wait_or_skip(60) #FIXME: registers too many mouseclicks, try method like with generation_counter
+								# self.Computer_targeting() #debugging for computer targeting
 							self.screen_refresh()
 							# print("essa")
-							for x in range(0,10):
-								for y in range(0,10):
-									# test_fog_of_war = random.randint(4,6)
-									self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(self.plansza_trafien_1[x][y] * 38, 0, 38, 38)) 
-									#TODO: dodać hit_alpha_sprite nakładany na plansze statkow gracza po strzalach komputera
-									self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.plansza_trafien_2[x][y] * 38, 0, 38, 38))
 							if self.player_move is True:
 								if pygame.mouse.get_pressed()[0] == 1:
 									mouse_pos_1 = pygame.mouse.get_pos()
@@ -204,7 +200,7 @@ class Battleships():
 										for y in range(0,10):
 											# print(mouse_pos_1)
 											check_pos = Rect(x * 38 + 578, y * 38 + 258, 38, 38)
-											if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True and self.plansza_statkow_1[x][y] != 3:
+											if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True:
 												print(f"Add hit to computer board on x: {x}| y: {y}")
 												if self.plansza_statkow_2[x][y] == 3 and self.plansza_trafien_2[x][y] != 1 and self.plansza_trafien_2[x][y] != 2: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
 													self.plansza_trafien_2[x][y] = 1 
@@ -224,7 +220,13 @@ class Battleships():
 													print(self.plansza_statkow_2)
 													print("plansza trafien 2")
 													print(self.plansza_trafien_2)
-
+							for x in range(0,10):
+								for y in range(0,10):
+									# test_fog_of_war = random.randint(4,6)
+									self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(self.plansza_trafien_1[x][y] * 38, 0, 38, 38)) 
+									#TODO: dodać hit_alpha_sprite nakładany na plansze statkow gracza po strzalach komputera
+									self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.plansza_trafien_2[x][y] * 38, 0, 38, 38))
+							self.screen_refresh()
 												# self.place_player_ship_counter += 1 
 												# print(f"Ships placed by player: {self.place_player_ship_counter}")
 								# self.player_move = False
@@ -234,9 +236,10 @@ class Battleships():
 								for i in range(1):
 									# print("test")
 									self.Computer_targeting()
+									self.wait_or_skip(60)
 								self.player_move = True
 								
-					# GAME LOOP
+					# GAME LOOP END
 					if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						self.clean_boards()
 						self.generation_counter = 0
