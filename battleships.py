@@ -32,7 +32,9 @@ class Battleships():
 
 		self.game_clock = pygame.time.Clock()
 		self.this_windows = pygame.display.set_mode((int(frame_height * i * self.frame_scale), frame_height * i), HWSURFACE|DOUBLEBUF|RESIZABLE)
+		icon = pygame.image.load("Assets/Images/icon.png")
 
+		pygame.display.set_icon(icon)
 		pygame.display.set_caption("BATTLESHIPS")
 
 		self.obraz = pygame.surface.Surface(self.this_windows.get_rect().size)
