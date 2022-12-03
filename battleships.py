@@ -40,47 +40,47 @@ class Battleships():
 
 		####################################################### LOADERS #######################################################
 		# INTRO LOADER
-		self.introSprite = pygame.image.load("Assets/Grafika/intro sprite.png")
+		self.introSprite = pygame.image.load("Assets/Images/intro sprite.png")
 
 		# MENU LOADER
-		self.tłoMenu = pygame.image.load("Assets/Grafika/menu.png")
-		self.tloPrzygotowan = pygame.image.load("Assets/Grafika/preparation_screen.png")
-		self.credits = pygame.image.load("Assets/Grafika/credits.png")
+		self.tłoMenu = pygame.image.load("Assets/Images/menu.png")
+		self.tloPrzygotowan = pygame.image.load("Assets/Images/preparation_screen.png")
+		self.credits = pygame.image.load("Assets/Images/credits.png")
 
 		# OPTIONS LOADER
-		self.options = pygame.image.load("Assets/Grafika/options.png")
+		self.options = pygame.image.load("Assets/Images/options.png")
 
 		# BUTTON LOADER
-		self.play_no_hover = pygame.image.load("Assets/Grafika/play_no_hover.png").convert_alpha()
-		self.play_hover = pygame.image.load("Assets/Grafika/play_hover.png").convert_alpha()
+		self.play_no_hover = pygame.image.load("Assets/Images/play_no_hover.png").convert_alpha()
+		self.play_hover = pygame.image.load("Assets/Images/play_hover.png").convert_alpha()
 		self.play_button = button.Button(398, 385, self.play_no_hover, self.play_hover, 1)
 
-		self.start_no_hover = pygame.image.load("Assets/Grafika/start_no_hover.png").convert_alpha()
-		self.start_hover = pygame.image.load("Assets/Grafika/start_hover.png").convert_alpha()
+		self.start_no_hover = pygame.image.load("Assets/Images/start_no_hover.png").convert_alpha()
+		self.start_hover = pygame.image.load("Assets/Images/start_hover.png").convert_alpha()
 		self.start_button = button.Button(369, 680, self.start_no_hover, self.start_hover, 1)
 
-		self.options_no_hover = pygame.image.load("Assets/Grafika/options_no_hover.png").convert_alpha()
-		self.options_hover = pygame.image.load("Assets/Grafika/options_hover.png").convert_alpha()
+		self.options_no_hover = pygame.image.load("Assets/Images/options_no_hover.png").convert_alpha()
+		self.options_hover = pygame.image.load("Assets/Images/options_hover.png").convert_alpha()
 		self.options_button = button.Button(319, 485, self.options_no_hover, self.options_hover, 1)
 
-		self.credits_no_hover = pygame.image.load("Assets/Grafika/credits_no_hover.png").convert_alpha()
-		self.credits_hover = pygame.image.load("Assets/Grafika/credits_hover.png").convert_alpha()
+		self.credits_no_hover = pygame.image.load("Assets/Images/credits_no_hover.png").convert_alpha()
+		self.credits_hover = pygame.image.load("Assets/Images/credits_hover.png").convert_alpha()
 		self.credits_button = button.Button(319, 635, self.credits_no_hover, self.credits_hover, 1)
 
-		self.exit_no_hover = pygame.image.load("Assets/Grafika/exit_no_hover.png").convert_alpha()
-		self.exit_hover = pygame.image.load("Assets/Grafika/exit_hover.png").convert_alpha()
+		self.exit_no_hover = pygame.image.load("Assets/Images/exit_no_hover.png").convert_alpha()
+		self.exit_hover = pygame.image.load("Assets/Images/exit_hover.png").convert_alpha()
 		self.exit_button = button.Button(408, 735, self.exit_no_hover, self.exit_hover, 1)
 
 		self.x_back_button = 20 #TODO: change placement of back button and possibly size?
 		self.y_back_button = 20
-		self.back_no_hover = pygame.image.load("Assets/Grafika/back_no_hover.png").convert_alpha()
-		self.back_hover = pygame.image.load("Assets/Grafika/back_hover.png").convert_alpha()
+		self.back_no_hover = pygame.image.load("Assets/Images/back_no_hover.png").convert_alpha()
+		self.back_hover = pygame.image.load("Assets/Images/back_hover.png").convert_alpha()
 		self.back_button = button.Button(self.x_back_button, self.y_back_button, self.back_no_hover, self.back_hover, 0.4)
 
 		# GAME LOADERS
-		self.hit_sprite = pygame.image.load("Assets/Grafika/hit_sprite.png").convert_alpha()
+		self.hit_sprite = pygame.image.load("Assets/Images/hit_sprite.png").convert_alpha()
 		# self.hit_sprite_rotate = pygame.transform.rotozoom(self.hit_sprite, 45, 1)
-		self.aim = pygame.image.load('C:/Repo/Battleshipz/Assets/Grafika/aim.png').convert_alpha()
+		self.aim = pygame.image.load('C:/Repo/Battleshipz/Assets/Images/aim.png').convert_alpha()
 
 		self.player_move = False
 		self.computer_move = False
@@ -142,7 +142,7 @@ class Battleships():
 		if not self.wait_or_skip(32): #TODO: dodać napis: PRESS ENTER TO SKIP
 			return
 		
-		pygame.mixer.music.load("Assets/Dzwiek/intro.ogg")
+		pygame.mixer.music.load("Assets/Sound/intro.ogg")
 		pygame.mixer.music.play()
 		
 		for i in range(0, 4):
@@ -156,7 +156,7 @@ class Battleships():
 	
 	def Menu(self):
 
-		pygame.mixer.music.load("Assets/Dzwiek/drunken_sailor_8_bit.ogg") # TODO:przyciszyć o 50%
+		pygame.mixer.music.load("Assets/Sound/wellerman_8bit_midi_by_kimel.ogg") # TODO:przyciszyć o 50%
 		pygame.mixer.music.play(-1)
 		
 		self.screen_refresh()
