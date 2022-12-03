@@ -89,6 +89,8 @@ class Battleships():
 		self.generation_counter = 0
 		self.player_shot_counter = 0
 		self.computer_shot_counter = 0
+		self.player_succesfull_hit_counter = 0
+		self.computer_succesfull_hit_counter = 0
 
 		self.plansza_trafien_1 = []
 		self.plansza_trafien_2 = []
@@ -185,7 +187,7 @@ class Battleships():
 						self.generation_counter = 1
 					if self.start_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						game_loop = True
-						while game_loop is True: # TODO: 
+						while game_loop is True: # TODO:
 							if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 								game_loop = False
 								# self.screen_refresh() 
@@ -201,10 +203,12 @@ class Battleships():
 											# print(mouse_pos_1)
 											check_pos = Rect(x * 38 + 578, y * 38 + 258, 38, 38)
 											if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True:
-												print(f"Add hit to computer board on x: {x}| y: {y}")
+												# print(f"Add hit to computer board on x: {x}| y: {y}")
 												if self.plansza_statkow_2[x][y] == 3 and self.plansza_trafien_2[x][y] != 1 and self.plansza_trafien_2[x][y] != 2: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
 													self.plansza_trafien_2[x][y] = 1 
 													self.player_shot_counter += 1
+													self.player_succesfull_hit_counter += 1
+													print(f"Player succesfull hits: {self.player_succesfull_hit_counter}")
 													self.player_move = False
 													self.computer_move = True
 												elif self.plansza_statkow_2[x][y] == 0 and self.plansza_trafien_2[x][y] != 1 and self.plansza_trafien_2[x][y] != 2: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
@@ -213,13 +217,13 @@ class Battleships():
 													self.player_shot_counter += 1
 													self.player_move = False
 													self.computer_move = True
-												else: 
-													print(f"Position is x: {x}| y: {y}")
-													print("Unexpected error")
-													print("plansza statkow 2")
-													print(self.plansza_statkow_2)
-													print("plansza trafien 2")
-													print(self.plansza_trafien_2)
+												# else: #DEBUG OUTPUT
+												# 	print(f"Position is x: {x}| y: {y}")
+												# 	print("Unexpected error")
+												# 	print("plansza statkow 2")
+												# 	print(self.plansza_statkow_2)
+												# 	print("plansza trafien 2")
+												# 	print(self.plansza_trafien_2)
 							for x in range(0,10):
 								for y in range(0,10):
 									# test_fog_of_war = random.randint(4,6)
@@ -227,6 +231,10 @@ class Battleships():
 									#TODO: dodać hit_alpha_sprite nakładany na plansze statkow gracza po strzalach komputera
 									self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.plansza_trafien_2[x][y] * 38, 0, 38, 38))
 							self.screen_refresh()
+							if self.player_succesfull_hit_counter == 20 or self.computer_succesfull_hit_counter == self.place_player_ship_counter:
+								end_screen_loop = True
+								while end_screen_loop is True:
+									print("Moje jest wygranko") 
 												# self.place_player_ship_counter += 1 
 												# print(f"Ships placed by player: {self.place_player_ship_counter}")
 								# self.player_move = False
@@ -236,7 +244,7 @@ class Battleships():
 								for i in range(1):
 									# print("test")
 									self.Computer_targeting()
-									self.wait_or_skip(60)
+									# self.wait_or_skip(60) #TODO: odkomentować
 								self.player_move = True
 								
 					# GAME LOOP END
@@ -401,10 +409,11 @@ class Battleships():
 			random_y = random.randint(0,9)
 			if self.plansza_trafien_1[random_x][random_y] != 1 and self.plansza_trafien_1[random_x][random_y] != 2 and self.plansza_trafien_1[random_x][random_y] != 4:
 				not_different = False
-		print(f"Add computer shot to: {random_x}, {random_y}")
+		# print(f"Add computer shot to: {random_x}, {random_y}")
 		if self.plansza_trafien_1[random_x][random_y] != 1 and self.plansza_trafien_1[random_x][random_y] != 2 and self.plansza_trafien_1[random_x][random_y] != 4: # sprawdzamy czy nie stawiamy na statku FIXME: chyba zbędny?
 			if self.plansza_statkow_1[random_x][random_y] == 3:
-				print("trafiono")
+				self.computer_succesfull_hit_counter += 1
+				print(f"Computer succesfull hits: {self.computer_succesfull_hit_counter}")
 				self.plansza_trafien_1[random_x][random_y] = 4 # zaznaczamy trafiony statek
 					# TODO: add hit animation
 			elif self.plansza_statkow_1[random_x][random_y] == 0:
