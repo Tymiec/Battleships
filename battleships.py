@@ -174,7 +174,9 @@ class Battleships():
 
 				self.screen_refresh()
 				#FIXME: potencjalny problem, jak włączymy grę i wrócimy to czy zostawić ustawienie gracza ale wyzerować ustawienie AI?
-				preparation_loop = True 
+				preparation_loop = True
+				self.player_move = True
+				self.computer_move = False
 				while preparation_loop is True:
 					# PRZYCISKI
 					# GAME LOOP
@@ -195,30 +197,45 @@ class Battleships():
 									self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(self.plansza_trafien_1[x][y] * 38, 0, 38, 38)) 
 									#TODO: dodać hit_alpha_sprite nakładany na plansze statkow gracza po strzalach komputera
 									self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.plansza_trafien_2[x][y] * 38, 0, 38, 38))
-							if pygame.mouse.get_pressed()[0] == 1:
-								mouse_pos_1 = pygame.mouse.get_pos()
-								for x in range(0,10):
-									for y in range(0,10):
-										# print(mouse_pos_1)
-										check_pos = Rect(x * 38 + 578, y * 38 + 258, 38, 38)
-										if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True and self.plansza_statkow_1[x][y] != 3:
-											print(f"Add hit to computer board on x: {x}| y: {y}")
-											if self.plansza_statkow_2[x][y] == 3: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
-												self.plansza_trafien_2[x][y] = 1 
-												self.player_shot_counter += 1
-											elif self.plansza_statkow_2[x][y] == 0: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
-												print(self.plansza_statkow_2[x][y])
-												self.plansza_trafien_2[x][y] = 2 
-												self.player_shot_counter += 1
-											else: 
-												print("Unexpected error")
-												print("plansza statkow 2")
-												print(self.plansza_statkow_2)
-												print("plansza trafien 2")
-												print(self.plansza_trafien_2)
+							if self.player_move is True:
+								if pygame.mouse.get_pressed()[0] == 1:
+									mouse_pos_1 = pygame.mouse.get_pos()
+									for x in range(0,10):
+										for y in range(0,10):
+											# print(mouse_pos_1)
+											check_pos = Rect(x * 38 + 578, y * 38 + 258, 38, 38)
+											if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True and self.plansza_statkow_1[x][y] != 3:
+												print(f"Add hit to computer board on x: {x}| y: {y}")
+												if self.plansza_statkow_2[x][y] == 3 and self.plansza_trafien_2[x][y] != 1 and self.plansza_trafien_2[x][y] != 2: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
+													self.plansza_trafien_2[x][y] = 1 
+													self.player_shot_counter += 1
+													self.player_move = False
+													self.computer_move = True
+												elif self.plansza_statkow_2[x][y] == 0 and self.plansza_trafien_2[x][y] != 1 and self.plansza_trafien_2[x][y] != 2: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
+													print(self.plansza_statkow_2[x][y])
+													self.plansza_trafien_2[x][y] = 2 
+													self.player_shot_counter += 1
+													self.player_move = False
+													self.computer_move = True
+												else: 
+													print(f"Position is x: {x}| y: {y}")
+													print("Unexpected error")
+													print("plansza statkow 2")
+													print(self.plansza_statkow_2)
+													print("plansza trafien 2")
+													print(self.plansza_trafien_2)
 
-											# self.place_player_ship_counter += 1 
-											# print(f"Ships placed by player: {self.place_player_ship_counter}")
+												# self.place_player_ship_counter += 1 
+												# print(f"Ships placed by player: {self.place_player_ship_counter}")
+								# self.player_move = False
+								# self.computer_move = True
+							if self.computer_move is True:
+								self.computer_move = False
+								for i in range(1):
+									# print("test")
+									self.Computer_targeting()
+								self.player_move = True
+								
 					# GAME LOOP
 					if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						self.clean_boards()
