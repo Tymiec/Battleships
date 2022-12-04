@@ -41,6 +41,16 @@ class Battleships():
 		self.obraz.fill((0, 0, 0))
 
 		####################################################### LOADERS #######################################################
+		self.music = [
+			"Assets/Sound/bitwa_shanty_nes_by_kimel.ogg",
+			"Assets/Sound/wellerman_8bit_midi_by_kimel.ogg",
+			"Assets/Sound/wellerman_8bit_midi_by_kimel_35plus.ogg"
+		]
+
+		# self.music_35 = [ 
+			# "Assets/Sound/wellerman_8bit_midi_by_kimel_35plus.ogg",
+			# "Assets/Sound/bitwa_shanty_nes_by_kimel.ogg",
+		# ]
 		# INTRO LOADER
 		self.introSprite = pygame.image.load("Assets/Images/intro_sprite.png")
 
@@ -86,7 +96,8 @@ class Battleships():
 
 		self.player_move = False
 		self.computer_move = False
-
+		
+		self.selected_song = 0
 		self.place_player_ship_counter = 0
 		self.generation_counter = 0
 		self.player_shot_counter = 0
@@ -160,12 +171,10 @@ class Battleships():
 	
 	def Menu(self):
 
-		pygame.mixer.music.load("Assets/Sound/wellerman_8bit_midi_by_kimel.ogg") # TODO:przyciszyć o 50%
-		pygame.mixer.music.play(-1)
-		
 		self.screen_refresh()
 		
 		while True :
+			self.Play_music()
 			self.obraz.blit(self.tłoMenu, self.tłoMenu.get_rect())
 			# PRZYCISKI
 			# PRZYCISK GRAJ
@@ -182,6 +191,7 @@ class Battleships():
 				self.player_move = True
 				self.computer_move = False
 				while preparation_loop is True:
+					self.Play_music()
 					# PRZYCISKI
 					# GAME LOOP START
 					if self.generation_counter == 0:
@@ -189,14 +199,19 @@ class Battleships():
 						self.generation_counter = 1
 					if self.start_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						game_loop = True
+						self.obraz.blit(self.tloPrzygotowan, self.tloPrzygotowan.get_rect())
 						while game_loop is True:
+							self.Play_music()
+							if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+								print("Thanks for playing!")
+								pygame.quit()
+								sys.exit()
 							if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 								game_loop = False
-								# self.screen_refresh() 
-								# self.wait_or_skip(60) #FIXME: registers too many mouseclicks, try method like with generation_counter
+								self.screen_refresh() 
+								self.wait_or_skip(10)
 								# self.Computer_targeting() #debugging for computer targeting
 							self.screen_refresh()
-							# print("essa")
 							if self.player_move is True:
 								if pygame.mouse.get_pressed()[0] == 1:
 									mouse_pos_1 = pygame.mouse.get_pos()
@@ -249,7 +264,7 @@ class Battleships():
 								
 					# GAME LOOP END
 					if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
-						self.clean_boards()
+						self.Clean_boards()
 						self.generation_counter = 0
 						preparation_loop = False
 
@@ -339,12 +354,25 @@ class Battleships():
 			check_press = pygame.key.get_pressed()
 			if check_press[K_RETURN]:
 				return False 
-				
 			self.screen_refresh()
 		
 		return True
 
-	def populateStatus():
+	def Play_music (self) :
+		if not pygame.mixer.music.get_busy() :
+			not_different = True
+			while not_different is True: # random generating coordinate until we find a free spot
+				new_selected = random.randint(0,2)
+				if self.selected_song != new_selected:
+					self.selected_song = new_selected
+					not_different = False
+			
+			pygame.mixer.music.load(self.music[self.selected_song])
+			pygame.mixer.music.play()
+			print(f"Now playing: {self.music[self.selected_song]}")
+
+
+	def PopulateStatus():
 		status = []
 		status.append([])
 		for x in range (0,4):
@@ -352,15 +380,15 @@ class Battleships():
 				status[x].append(0)
 		print(status)
 
-	def rotate(self):
+	def Rotate(self):
 		self.image = pygame.transform.rotozoom(self.orig_image, self.angle, 1)
 		self.rect = self.image.get_rect(center=self.rect.center)
 
-	def update(self):
+	def Update(self):
 		self.angle += 10
-		self.rotate()
+		self.Rotate()
 
-	def clean_boards(self):
+	def Clean_boards(self):
 		self.plansza_trafien_1 = []
 		self.plansza_trafien_2 = []
 		self.plansza_statkow_1 = []
