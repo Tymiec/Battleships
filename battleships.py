@@ -235,8 +235,8 @@ class Battleships():
 													self.player_move = False
 													self.computer_move = True
 												# else: #DEBUG OUTPUT
+												# 	print("You can't hit this square again")
 												# 	print(f"Position is x: {x}| y: {y}")
-												# 	print("Unexpected error")
 												# 	print("plansza statkow 2")
 												# 	print(self.plansza_statkow_2)
 												# 	print("plansza trafien 2")
