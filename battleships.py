@@ -42,7 +42,7 @@ class Battleships():
 
 		####################################################### LOADERS #######################################################
 		# INTRO LOADER
-		self.introSprite = pygame.image.load("Assets/Images/intro sprite.png")
+		self.introSprite = pygame.image.load("Assets/Images/intro_sprite.png")
 
 		# MENU LOADER
 		self.tłoMenu = pygame.image.load("Assets/Images/menu.png")
@@ -106,11 +106,11 @@ class Battleships():
 			self.plansza_statkow_1.append([])
 			self.plansza_statkow_2.append([])
 			for y in range(0,10):
-				self.plansza_trafien_1[x].append(0) # FIXME: Change to 0
-				self.plansza_trafien_2[x].append(0) # FIXME: Change to 0
+				self.plansza_trafien_1[x].append(0)
+				self.plansza_trafien_2[x].append(0)
 
-				self.plansza_statkow_1[x].append(0) # FIXME: Change to 0
-				self.plansza_statkow_2[x].append(0) # FIXME: Change to 0
+				self.plansza_statkow_1[x].append(0)
+				self.plansza_statkow_2[x].append(0)
 		####################################################### LOADERS #######################################################
 
 		# FIXME: Nie działa dynamiczne skalowanie, dodać skalowanie ładowanek obrazka i pozycjonowanie względem domyślnej rozdzielczości
@@ -189,7 +189,7 @@ class Battleships():
 						self.generation_counter = 1
 					if self.start_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						game_loop = True
-						while game_loop is True: # TODO:
+						while game_loop is True:
 							if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 								game_loop = False
 								# self.screen_refresh() 
@@ -236,9 +236,7 @@ class Battleships():
 							if self.player_succesfull_hit_counter == 20 or self.computer_succesfull_hit_counter == self.place_player_ship_counter:
 								end_screen_loop = True
 								while end_screen_loop is True:
-									print("Moje jest wygranko") 
-												# self.place_player_ship_counter += 1 
-												# print(f"Ships placed by player: {self.place_player_ship_counter}")
+									print(f"Moje jest wygranko: {self.player_succesfull_hit_counter}, {self.computer_succesfull_hit_counter}")
 								# self.player_move = False
 								# self.computer_move = True
 							if self.computer_move is True:
@@ -265,7 +263,7 @@ class Battleships():
 						for y in range(0,10):
 							# test_fog_of_war = random.randint(4,6)
 							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(self.plansza_statkow_1[x][y] * 38, 0, 38, 38))
-							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.plansza_statkow_2[x][y] * 38, 0, 38, 38)) # TODO:add fog of war
+							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.plansza_statkow_2[x][y] * 38, 0, 38, 38)) # TODO: add fog of war
 					# HIT REGISTER
 					if pygame.mouse.get_pressed()[0] == 1:
 						mouse_pos_1 = pygame.mouse.get_pos()
