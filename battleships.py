@@ -55,8 +55,9 @@ class Battleships():
 		self.introSprite = pygame.image.load("Assets/Images/intro_sprite.png")
 
 		# MENU LOADER
-		self.tłoMenu = pygame.image.load("Assets/Images/menu.png")
-		self.tloPrzygotowan = pygame.image.load("Assets/Images/preparation_screen.png")
+		self.menu_backgrund = pygame.image.load("Assets/Images/menu.png")
+		self.preparation_background = pygame.image.load("Assets/Images/preparation_screen.png")
+		self.end_background = pygame.image.load("Assets/Images/end_screen.png")
 		self.credits = pygame.image.load("Assets/Images/credits.png")
 
 		# OPTIONS LOADER
@@ -73,15 +74,15 @@ class Battleships():
 
 		self.options_no_hover = pygame.image.load("Assets/Images/options_no_hover.png").convert_alpha()
 		self.options_hover = pygame.image.load("Assets/Images/options_hover.png").convert_alpha()
-		self.options_button = button.Button(319, 485, self.options_no_hover, self.options_hover, 1)
+		self.options_button = button.Button(319, 485, self.options_no_hover, self.options_hover, 1) # y was 485
 
 		self.credits_no_hover = pygame.image.load("Assets/Images/credits_no_hover.png").convert_alpha()
 		self.credits_hover = pygame.image.load("Assets/Images/credits_hover.png").convert_alpha()
-		self.credits_button = button.Button(319, 635, self.credits_no_hover, self.credits_hover, 1)
+		self.credits_button = button.Button(319, 585, self.credits_no_hover, self.credits_hover, 1)
 
 		self.exit_no_hover = pygame.image.load("Assets/Images/exit_no_hover.png").convert_alpha()
 		self.exit_hover = pygame.image.load("Assets/Images/exit_hover.png").convert_alpha()
-		self.exit_button = button.Button(408, 735, self.exit_no_hover, self.exit_hover, 1)
+		self.exit_button = button.Button(408, 825, self.exit_no_hover, self.exit_hover, 1) # y was 735, y was 835
 
 		self.x_back_button = 20 #TODO: change placement of back button and possibly size?
 		self.y_back_button = 20
@@ -154,7 +155,7 @@ class Battleships():
 
 	def Intro(self):
 		
-		if not self.wait_or_skip(32): #TODO: dodać napis: PRESS ENTER TO SKIP
+		if not self.wait_or_skip(32):
 			return
 		
 		pygame.mixer.music.load("Assets/Sound/intro.ogg")
@@ -175,11 +176,11 @@ class Battleships():
 		
 		while True :
 			self.Play_music()
-			self.obraz.blit(self.tłoMenu, self.tłoMenu.get_rect())
+			self.obraz.blit(self.menu_backgrund, self.menu_backgrund.get_rect())
 			# PRZYCISKI
 			# PRZYCISK GRAJ
 			if self.play_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
-				self.obraz.blit(self.tloPrzygotowan, self.tloPrzygotowan.get_rect())
+				self.obraz.blit(self.preparation_background, self.preparation_background.get_rect())
 				## KORDYNATY ZEROWE LEWEGO GÓRNEGO ROGU PLANSZY 1 
 				# X: 66 Y: 258 każde przesunięcie o x: 38 i y: 38
 				# KORDYNATY ZEROWE LEWEGO GÓRNEGO ROGU PLANSZY 2
@@ -199,8 +200,8 @@ class Battleships():
 						self.generation_counter = 1
 					if self.start_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						game_loop = True
-						self.obraz.blit(self.tloPrzygotowan, self.tloPrzygotowan.get_rect())
-						while game_loop is True:
+						self.obraz.blit(self.preparation_background, self.preparation_background.get_rect())
+						while game_loop is True: 
 							self.Play_music()
 							if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 								print("Thanks for playing!")
@@ -250,10 +251,23 @@ class Battleships():
 							self.screen_refresh()
 							if self.player_succesfull_hit_counter == 20 or self.computer_succesfull_hit_counter == self.place_player_ship_counter:
 								end_screen_loop = True
-								while end_screen_loop is True:
-									print(f"Moje jest wygranko: {self.player_succesfull_hit_counter}, {self.computer_succesfull_hit_counter}")
+								# END SCREEN LOOP
+								while end_screen_loop is True: # TODO: possibly add a reset/restart button?
+									self.obraz.blit(self.end_background, self.end_background.get_rect())
+									if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+										print("Thanks for playing!")
+										pygame.quit()
+										sys.exit()
+									if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+										end_screen_loop = False
+										game_loop = False
+										preparation_loop = False
+										self.screen_refresh() 
+										self.wait_or_skip(10)
+									self.screen_refresh()
 								# self.player_move = False
 								# self.computer_move = True
+								# END SCREEN LOOP
 							if self.computer_move is True:
 								self.computer_move = False
 								for i in range(1):
