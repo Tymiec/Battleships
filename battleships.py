@@ -184,12 +184,13 @@ class Battleships():
 				preparation_loop = True
 				self.player_move = True
 				self.computer_move = False
-				while preparation_loop is True:
+				while preparation_loop is True: #TODO
 					self.Play_music()
 					# BUTTONI
 					# GAME LOOP START
 					if self.generation_counter == 0:
-						self.Generate_ai_board()
+						self.ship_board_2 = self.generate_whole_board(self.ship_board_2)
+						# self.Generate_ai_board()
 						self.generation_counter = 1
 					if self.start_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						game_loop = True
@@ -438,21 +439,21 @@ class Battleships():
 				if self.ship_board_2[x][y] == 10:
 					self.ship_board_2[x][y] = 0
 
-	def Generate_ai_board(self): #TODO przycisk dla graca 
-		# statki = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
-		random_x = -1
-		random_y = -1
+	# def Generate_ai_board(self): #TODO przycisk dla graca 
+	# 	# statki = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+	# 	random_x = -1
+	# 	random_y = -1
 
-		for x in range(20):
-			not_different = True
-			while not_different: # random generating coordinate until we find a free spot
-				random_x = random.randint(0,9)
-				random_y = random.randint(0,9)
-				if self.ship_board_2[random_x][random_y] != 3 and self.ship_board_2[random_x][random_y] != 2 and self.ship_board_2[random_x][random_y] != 10:
-					not_different = False
-			if self.ship_board_2[random_x][random_y] != 3:
-				self.ship_board_2[random_x][random_y] = 3
-				self.MarkAsOccupiedFromThisField(self.ship_board_2,random_x,random_y)
+	# 	for x in range(20):
+	# 		not_different = True
+	# 		while not_different: # random generating coordinate until we find a free spot
+	# 			random_x = random.randint(0,9)
+	# 			random_y = random.randint(0,9)
+	# 			if self.ship_board_2[random_x][random_y] != 3 and self.ship_board_2[random_x][random_y] != 2 and self.ship_board_2[random_x][random_y] != 10:
+	# 				not_different = False
+	# 		if self.ship_board_2[random_x][random_y] != 3:
+	# 			self.ship_board_2[random_x][random_y] = 3
+	# 			self.MarkAsOccupiedFromThisField(self.ship_board_2,random_x,random_y)
 
 	def Computer_targeting(self):
 		random_x = -1
@@ -500,6 +501,91 @@ class Battleships():
 			self.computer_succesfull_hit_counter, d = divmod(self.computer_succesfull_hit_counter, 10)
 			self.computer_succesfull_hit_counter_array.append(int(d))
 			self.computer_succesfull_hit_counter_array.reverse()
+
+	def generate_ship(self, length, grid):
+		not_colliding = False
+		while not_colliding is False:
+			random_x = random.randint(0, 9)
+			random_y = random.randint(0, 9)
+			direction = random.randint(0, 1)  # 0 for horizontal, 1 for vertical
+			
+			# check if the ship will fit on the grid
+			if direction == 0:
+				# check if the ship fits horizontally
+				if random_y + length > 10:
+				# the ship won't fit, so pick a new starting point
+					random_y = random.randint(0, 9 - length)
+			elif direction == 1:
+				# check if the ship fits vertically
+				if random_x + length > 10:
+				# the ship won't fit, so pick a new starting point
+					random_x = random.randint(0, 9 - length)
+
+			# check if the ship will not collide with others ships
+			if direction == 0:
+				for i in range(length):
+					if grid[random_x][random_y + i] == 3 or grid[random_x][random_y + i] == 10:
+						# print("nie miesci sie")
+						return False
+					else: not_colliding = True
+			elif direction == 1:
+				for i in range(length):
+					if grid[random_x + i][random_y] == 3 or grid[random_x + i][random_y] == 10:
+						# print("nie miesci sie")
+						return False
+					else: not_colliding = True   
+
+		# place the ship on the grid
+		for i in range(length):
+			if direction == 0:
+			# place the ship horizontally
+				if i == 0 and random_y - 1 > -1: # add restricion on start of ships
+					# print("dodano gorne")
+					grid[random_x][random_y - 1] = 10
+				if i == length - 1 and random_y + 1 + i < 10: # add restricion on end of ships
+					# print("dodano dolne")
+					grid[random_x][random_y + i + 1] = 10
+				grid[random_x][random_y + i] = 3
+				self.MarkAsOccupiedFromThisField(grid, random_x, random_y + i)
+			else:
+			# place the ship vertically
+				if i == 0 and random_x - 1 > -1: # add restricion on start of ships
+					# print("dodano gorne")
+					grid[random_x - 1][random_y] = 10
+				if i == length - 1 and random_x + 1 + i < 10: # add restricion on end of ships
+					# print("dodano dolne")
+					# print(random_x + i + 1)
+					grid[random_x + i + 1][random_y] = 10
+				grid[random_x + i][random_y] = 3
+				self.MarkAsOccupiedFromThisField(grid, random_x + i, random_y)
+		
+		# print(grid)
+		return grid
+
+	def generate_whole_board(self, test_grid):
+		ships_1 = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+		counter = 0
+		while counter != 20:
+			counter = 0
+			placement_loop = False
+			while placement_loop is False:
+				can_fit = True
+				test_grid = []
+				for x in range(0,10):
+					test_grid.append([])
+					for y in range(0,10):
+						test_grid[x].append(0)
+				for i in range(len(ships_1)):
+					tester = self.generate_ship(ships_1[i], test_grid)
+					if tester == False: # jeżeli jakaś funkcja nie była w stanie postawić statku to zwróci False który musimy przechować przez całego for'a
+						can_fit = tester # zmieniamy went_wrong z True na False żeby pętla nam się
+					# print(ships_1[i])
+					placement_loop = can_fit
+			for x in range(0,10):
+				for y in range(0,10):
+					if test_grid[x][y] == 3:
+						counter += 1
+		return test_grid
 
 def Main():
 	battleships = Battleships()
