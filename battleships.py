@@ -5,6 +5,11 @@ from random import randrange
 import pygame, sys
 from pygame.locals import *
 import button
+##
+# EXISITING BUGS:
+# dynamic button scaling does not work
+# you can't clear the generated player board because it fills but going back and generating it again does the trick
+##
 
 class Battleships():
 	
@@ -12,6 +17,7 @@ class Battleships():
 
 		self.fps = 60
 		frame_height = 224
+		# self.frame_scale = 16/9
 		self.frame_scale = 1.142857142857143
 		
 		# COORDIANTES OF LEFT CORNER OF BOARD_1
@@ -24,8 +30,11 @@ class Battleships():
 		current_screen = pygame.display.Info()
 		i = 1
 
-		while frame_height * i < current_screen.current_h * 0.8 :
-			i += 1
+		# while frame_height * i < current_screen.current_h * 0.8 :
+		# 	i += 1
+
+		frame_height = 896
+
 
 		pygame.mixer.init()
 
@@ -86,6 +95,10 @@ class Battleships():
 		self.back_hover = pygame.image.load("Assets/Images/back_hover.png").convert_alpha()
 		self.back_button = button.Button(self.x_back_button, self.y_back_button, self.back_no_hover, self.back_hover, 0.4)
 
+		self.generate_no_hover = pygame.image.load("Assets/Images/generate_no_hover.png").convert_alpha()
+		self.generate_hover = pygame.image.load("Assets/Images/generate_hover.png").convert_alpha()
+		self.generate_button = button.Button(116, 122, self.generate_no_hover, self.generate_hover, 1)
+		# 50 i -136
 		# GAME LOADERS
 		self.hit_sprite = pygame.image.load("Assets/Images/hit_sprite.png").convert_alpha()
 		self.aim = pygame.image.load('C:/Repo/Battleshipz/Assets/Images/aim.png').convert_alpha()
@@ -96,6 +109,7 @@ class Battleships():
 		self.selected_song = 0
 		self.place_player_ship_counter = 0
 		self.generation_counter = 0
+		self.generation_counter_2 = 0
 		self.player_shot_counter = 0
 		self.computer_shot_counter = 0
 		self.player_succesfull_hit_counter = 0
@@ -190,8 +204,15 @@ class Battleships():
 					# GAME LOOP START
 					if self.generation_counter == 0:
 						self.ship_board_2 = self.generate_whole_board(self.ship_board_2)
-						# self.Generate_ai_board()
 						self.generation_counter = 1
+					if self.generate_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1 and self.generation_counter_2 == 0:
+						# print("generate player board")
+						# self.Clean_boards()
+						self.generation_counter_2 = 1
+						# print(self.ship_board_1)
+						# self.wait_or_skip(60)
+						self.ship_board_1 = self.generate_whole_board(self.ship_board_1)
+						print("essa")
 					if self.start_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						game_loop = True
 						self.DeleteRestricions()
@@ -284,6 +305,7 @@ class Battleships():
 					if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						self.Clean_boards()
 						self.generation_counter = 0
+						self.generation_counter_2 = 0
 						preparation_loop = False
 
 					if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
@@ -305,6 +327,7 @@ class Battleships():
 							for y in range(0,10):
 								# print(mouse_pos_1)
 								check_pos = Rect(x * 38 + 66, y * 38 + 258, 38, 38)
+								# self.obraz.blit(self.hit_sprite,Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(5 * 38, 0, 38, 38))
 								if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True and self.ship_board_1[x][y] != 10 and self.ship_board_1[x][y] != 3 and self.place_player_ship_counter < 20:
 									# print(f"Add ship to player board on x: {x}| y: {y}")
 									self.ship_board_1[x][y] = 3 # zmiana kwadratu na statek
@@ -396,6 +419,11 @@ class Battleships():
 	def Update(self):
 		self.angle += 10
 		self.Rotate()
+
+	def Clean_selected_board(self):
+		for x in range(0,10):
+			for y in range(0,10):
+				self.ship_board_1[x][y] = 0
 
 	def Clean_boards(self):
 		self.hit_board_1 = []
@@ -565,6 +593,7 @@ class Battleships():
 	def generate_whole_board(self, test_grid):
 		ships_1 = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 		counter = 0
+		
 		while counter != 20:
 			counter = 0
 			placement_loop = False
@@ -575,6 +604,9 @@ class Battleships():
 					test_grid.append([])
 					for y in range(0,10):
 						test_grid[x].append(0)
+				for x in range(0,10):
+					for y in range(0,10):
+						test_grid[x][y] = 0
 				for i in range(len(ships_1)):
 					tester = self.generate_ship(ships_1[i], test_grid)
 					if tester == False: # jeżeli jakaś funkcja nie była w stanie postawić statku to zwróci False który musimy przechować przez całego for'a
