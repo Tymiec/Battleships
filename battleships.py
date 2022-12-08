@@ -438,7 +438,7 @@ class Battleships():
 				if self.ship_board_2[x][y] == 10:
 					self.ship_board_2[x][y] = 0
 
-	def Generate_ai_board(self):
+	def Generate_ai_board(self): #TODO przycisk dla graca 
 		# statki = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 		random_x = -1
 		random_y = -1
