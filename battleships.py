@@ -209,6 +209,7 @@ class Battleships():
 						# print("generate player board")
 						# self.Clean_boards()
 						self.generation_counter_2 = 1
+						self.place_player_ship_counter = 20
 						# print(self.ship_board_1)
 						# self.wait_or_skip(60)
 						self.ship_board_1 = self.generate_whole_board(self.ship_board_1)
@@ -243,8 +244,8 @@ class Battleships():
 													self.player_shot_counter += 1
 													self.player_succesfull_hit_counter += 1
 													print(f"Player succesfull hits: {self.player_succesfull_hit_counter}")
-													self.player_move = False
-													self.computer_move = True
+													self.player_move = True
+													self.computer_move = False
 												elif self.ship_board_2[x][y] == 0 and self.hit_board_2[x][y] != 1 and self.hit_board_2[x][y] != 2: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
 													# print(self.ship_board_2[x][y])
 													self.hit_board_2[x][y] = 2 
@@ -284,22 +285,29 @@ class Battleships():
 										self.screen_refresh() 
 										self.wait_or_skip(10)
 										# 34 
-									for x in range(2):						 #pozycja   x             y wymiary | odejmujemy 2 od x
-										self.obraz.blit(self.numbers, Rect(x * 34 + 384, 685, 34, 30), Rect(self.player_shot_counter_array[x] * 34, 0, 34, 30))
-									for x in range(2):
-										self.obraz.blit(self.numbers, Rect(x * 34 + 384, 730, 34, 30), Rect(self.player_succesfull_hit_counter_array[x] * 34, 0, 34, 30))
-									for x in range(2):						 #pozycja   x             y wymiary | odejmujemy 2 od x
-										self.obraz.blit(self.numbers, Rect(x * 34 + 894, 685, 34, 30), Rect(self.computer_shot_counter_array[x] * 34, 0, 34, 30))
-									for x in range(2):
-										self.obraz.blit(self.numbers, Rect(x * 34 + 894, 730, 34, 30), Rect(self.computer_succesfull_hit_counter_array[x] * 34, 0, 34, 30))	
+									
+									# print(self.player_shot_counter_array)
+									if self.player_shot_counter_array != []:
+										for x in range(2):						 #pozycja   x             y wymiary | odejmujemy 2 od x
+											self.obraz.blit(self.numbers, Rect(x * 34 + 384, 685, 34, 30), Rect(self.player_shot_counter_array[x] * 34, 0, 34, 30))
+									if self.player_succesfull_hit_counter_array != []:
+										for x in range(2):
+											self.obraz.blit(self.numbers, Rect(x * 34 + 384, 730, 34, 30), Rect(self.player_succesfull_hit_counter_array[x] * 34, 0, 34, 30))
+									if self.computer_shot_counter_array != []:
+										for x in range(2):						 #pozycja   x             y wymiary | odejmujemy 2 od x
+											self.obraz.blit(self.numbers, Rect(x * 34 + 894, 685, 34, 30), Rect(self.computer_shot_counter_array[x] * 34, 0, 34, 30))
+									if self.computer_succesfull_hit_counter_array != []:
+										for x in range(2):
+											self.obraz.blit(self.numbers, Rect(x * 34 + 894, 730, 34, 30), Rect(self.computer_succesfull_hit_counter_array[x] * 34, 0, 34, 30))	
 									self.screen_refresh()
 								# END SCREEN LOOP
 							if self.computer_move is True:
 								self.computer_move = False
+								self.player_move = True
 								for i in range(1):
 									self.Computer_targeting()
 									# self.wait_or_skip(60)
-								self.player_move = True
+								
 								
 					# GAME LOOP END
 					if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
@@ -494,15 +502,20 @@ class Battleships():
 			if self.hit_board_1[random_x][random_y] != 1 and self.hit_board_1[random_x][random_y] != 2 and self.hit_board_1[random_x][random_y] != 4:
 				not_different = False
 		# print(f"Add computer shot to: {random_x}, {random_y}") 
-		if self.hit_board_1[random_x][random_y] != 1 and self.hit_board_1[random_x][random_y] != 2 and self.hit_board_1[random_x][random_y] != 4: # sprawdzamy czy nie stawiamy na statku FIXME: chyba zbędny?
+		if self.hit_board_1[random_x][random_y] not in [1, 2, 4, 10]: # sprawdzamy czy nie stawiamy na statku FIXME: chyba zbędny?
 			if self.ship_board_1[random_x][random_y] == 3:
 				self.computer_succesfull_hit_counter += 1
 				# print(f"Computer succesfull hits: {self.computer_succesfull_hit_counter}")
 				self.computer_shot_counter += 1
 				self.hit_board_1[random_x][random_y] = 4 # mark hit
+				self.MarkAsOccupiedFromThisField(self.hit_board_1, random_x, random_y)
+				self.computer_move = True
+				self.player_move = False
+				# return True
 			elif self.ship_board_1[random_x][random_y] == 0:
 					self.hit_board_1[random_x][random_y] = 2 # mark miss
 					self.computer_shot_counter += 1
+					# return False
 
 	def Change_number_to_array(self):
 		self.player_shot_counter_array = []
