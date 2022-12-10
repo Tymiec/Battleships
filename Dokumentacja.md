@@ -1,5 +1,6 @@
 # Battleships
 > Autor: Tymiec
+
 ## Projekt gry w Statki za pomocą biblioteki Pygame
 Lorem ipsum
 
@@ -27,7 +28,10 @@ Przyjęte wartości:
 ### **Algorytm rozmieszczania statków** - ```Generate_whole_board()``` i ```Generate_ship()```
 ```Generate_ship(length)```
 
-W pętli while losujemy dwie zmienne od 0 do 9 których używamy jako koordynatów do rozpoczęcia kładzenia statku tak długo aż nie znajdziemy miejsca na planszy ship_board(plansza statków gracza lub komputer). Sprawdzamy czy statek o podanej długości zmieści się w wylosowanych koordynatach.
+W pętli while losujemy dwie zmienne od 0 do 9 których używamy jako koordynatów do rozpoczęcia kładzenia statku tak długo aż nie znajdziemy miejsca na planszy ship_board(plansza statków gracza lub komputer). Sprawdzamy czy statek o podanej długości zmieści się w wylosowanych koordynatach. Jeżeli tak to go kładziemy, jeśli nie to powtarzamy losowanie punktu i zwracamy ```False```.
+```Generate_whole_board()```
+
+W pętli while pobieramy z tablicy ships_1 długości statków. Potem wywołujemy funkcję generowania statków tak długo aż komputerowi nie uda się zmieścić wszystkich statków ponieważ przy pewnych ustawieniach jeden ze statków nie miał się gdzie zmieścić
 
 ---
 
@@ -49,6 +53,11 @@ Pola oznaczamy jako takie na których nie może być statku przy trafieniu pola 
 
 ---
 
+## Znane problemy:
+*1. Co zrobić jeżeli na moim ekranie 1920x1080 okno gry jest zbyt duże?*
+Jeżeli na ekranie 1920x1080 okno gry nie mieści się na wysokość to prawdopodobnie skala jest ustawiona na wartość większą niż 100%.
+Aby to zmienić wystarczy wejść do
+System -> Wyświetlacz -> Skala i Układ i zmienić skalę na 100%
 
 ## Napisane przy użyciu
 - Python 3.11.0
