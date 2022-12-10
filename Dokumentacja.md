@@ -50,11 +50,16 @@
 
 ## Jak grać?
 Aby zagrać wystarczy uruchomić plik battleships.py będąc w głównym folderze z plikami. 
+
 Po uruchomienie kliknąć przycisk PLAY.
+
 Jeżeli chcemy samemu ustawić statki to klikamy myszką na planszy po lewej w miejscach w których chcemy postawić część statku. Możemy ustawić maksymalnie 20 części statku. Jeżeli ustawimy mniej to utrudniamy sobie grę.
+
 Możemy także wygenerować statki, z powodu błędu generowanie jest aktualnie tylko możliwe przed postawienieniem jakiejkolwiek części statku na planszy.
 Gdy ustawimy statki klikamy przycisk START i zaczynamy grę.
+
 Na planszy po prawej stronie wybieramy pole w które chcemy strzelić, czerwony X symbolizuje trafienie a niebieskie pole symbolizuje pudło. Jeżeli trafimy to dostajemy kolejne strzał, jeżeli nie trafimy następny strzał odda komputer w naszą planszę.
+
 Gra kończy się w momencie zatopienia wszystkich statków gracza lub komputera
 
 Po zakończeniu widzimy planszę podsumowującą.
