@@ -110,14 +110,17 @@ Pola oznaczamy jako takie na których nie może być statku przy trafieniu pola 
 
 ## Znane problemy i rozwiązania:
 **1. Co zrobić jeżeli na moim ekranie 1920x1080 okno gry jest zbyt duże?**
+
 Jeżeli na ekranie 1920x1080 okno gry nie mieści się na wysokość to prawdopodobnie skala jest ustawiona na wartość większą niż 100%.
 Aby to zmienić wystarczy wejść do
 System -> Wyświetlacz -> Skala i Układ i zmienić skalę na 100%
 
 **2. Po wygranej nie czyszczone są wszystkie zmienne.**
+
 Nie rozwiązany, trzeba dopisać funkcję czyszczącą wszystkie zmienne
 
 **3. Będąc w pętli przygotowań nie da się wielokrotnie wyczyścić tablicy**
+
 Rozwiązane tymczasowo dając graczowi możliwość tylko ręcznego rozmieszczania statków (bez ograniczenia ich długości do takich jakie ma komputer ale z ograniczoną ilością do 20) lub jednorazowego kliknięcia przycisku do generowania
 
 ## Napisane przy użyciu
