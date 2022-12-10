@@ -49,7 +49,17 @@
 
 
 ## Jak grać?
-Lorem ipsum
+Aby zagrać wystarczy uruchomić plik battleships.py będąc w głównym folderze z plikami. 
+Po uruchomienie kliknąć przycisk PLAY.
+Jeżeli chcemy samemu ustawić statki to klikamy myszką na planszy po lewej w miejscach w których chcemy postawić część statku. Możemy ustawić maksymalnie 20 części statku. Jeżeli ustawimy mniej to utrudniamy sobie grę.
+Możemy także wygenerować statki, z powodu błędu generowanie jest aktualnie tylko możliwe przed postawienieniem jakiejkolwiek części statku na planszy.
+Gdy ustawimy statki klikamy przycisk START i zaczynamy grę.
+Na planszy po prawej stronie wybieramy pole w które chcemy strzelić, czerwony X symbolizuje trafienie a niebieskie pole symbolizuje pudło. Jeżeli trafimy to dostajemy kolejne strzał, jeżeli nie trafimy następny strzał odda komputer w naszą planszę.
+Gra kończy się w momencie zatopienia wszystkich statków gracza lub komputera
+
+Po zakończeniu widzimy planszę podsumowującą.
+Moves - liczba oddanych strzałów 
+Hits - liczba trafień
 
 ## Omówienie wybranych fragmentów kodu
 Przyjęte wartości:
@@ -81,7 +91,7 @@ W pętli while pobieramy z tablicy ships_1 długości statków. Potem wywołujem
 ---
 
 ### **Rysowanie sprite'ów**
-Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
+TODO
 
 ---
 
@@ -99,13 +109,15 @@ Pola oznaczamy jako takie na których nie może być statku przy trafieniu pola 
 ---
 
 ## Znane problemy i rozwiązania:
-*1. Co zrobić jeżeli na moim ekranie 1920x1080 okno gry jest zbyt duże?*
+**1. Co zrobić jeżeli na moim ekranie 1920x1080 okno gry jest zbyt duże?**
 Jeżeli na ekranie 1920x1080 okno gry nie mieści się na wysokość to prawdopodobnie skala jest ustawiona na wartość większą niż 100%.
 Aby to zmienić wystarczy wejść do
 System -> Wyświetlacz -> Skala i Układ i zmienić skalę na 100%
-*2. Po wygranej nie czyszczone są wszystkie zmienne.*
+
+**2. Po wygranej nie czyszczone są wszystkie zmienne.**
 Nie rozwiązany, trzeba dopisać funkcję czyszczącą wszystkie zmienne
-*3. Będąc w pętli przygotowań nie da się wielokrotnie wyczyścić tablicy*
+
+**3. Będąc w pętli przygotowań nie da się wielokrotnie wyczyścić tablicy**
 Rozwiązane tymczasowo dając graczowi możliwość tylko ręcznego rozmieszczania statków (bez ograniczenia ich długości do takich jakie ma komputer ale z ograniczoną ilością do 20) lub jednorazowego kliknięcia przycisku do generowania
 
 ## Napisane przy użyciu
