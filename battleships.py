@@ -16,9 +16,9 @@ class Battleships():
 	def __init__(self):
 
 		self.fps = 60
-		frame_height = 224
+		# frame_height = 224
 		# self.frame_scale = 16/9
-		self.frame_scale = 1.142857142857143
+		# self.frame_scale = 1.142857142857143
 		
 		# COORDIANTES OF LEFT CORNER OF BOARD_1
 		# X: 66 Y: 258 every move by x: 38 i y: 38
@@ -27,8 +27,8 @@ class Battleships():
 
 		pygame.init()
 
-		current_screen = pygame.display.Info()
-		i = 1
+		# current_screen = pygame.display.Info()
+		# i = 1
 
 		# while frame_height * i < current_screen.current_h * 0.8 :
 		# 	i += 1
@@ -39,8 +39,11 @@ class Battleships():
 		pygame.mixer.init()
 
 		self.game_clock = pygame.time.Clock()
-		self.this_windows = pygame.display.set_mode((int(frame_height * i * self.frame_scale), frame_height * i), HWSURFACE|DOUBLEBUF|RESIZABLE)
-		icon = pygame.image.load("Assets/Images/icon.png")
+		# self.this_windows = pygame.display.set_mode((int(frame_height * i * self.frame_scale), frame_height * i), HWSURFACE|DOUBLEBUF|NOFRAME|RESIZABLE)
+		self.this_windows = pygame.display.set_mode((1024, 896))
+		# self.this_windows = pygame.display.set_mode((512, 448), HWSURFACE|DOUBLEBUF|NOFRAME)
+
+		icon = pygame.image.load("Assets/Images/icon.ico")
 
 		pygame.display.set_icon(icon)
 		pygame.display.set_caption("BATTLESHIPS")
@@ -137,8 +140,6 @@ class Battleships():
 				self.ship_board_1[x].append(0)
 				self.ship_board_2[x].append(0)
 		####################################################### LOADERS #######################################################
-
-		# FIXME: Nie działa dynamiczne skalowanie, dodać skalowanie ładowanek obrazka i pozycjonowanie względem domyślnej rozdzielczości
      
 	def Start(self):
 		
@@ -159,8 +160,8 @@ class Battleships():
 				pygame.quit()
 				exit()
 			elif event.type == VIDEORESIZE:
-				self.this_windows = pygame.display.set_mode((event.size[1] * self.frame_scale, event.size[1]), HWSURFACE|DOUBLEBUF|RESIZABLE)
-		
+				# self.this_windows = pygame.display.set_mode((event.size[1] * self.frame_scale, event.size[1]), HWSURFACE|DOUBLEBUF)
+				self.this_windows = pygame.display.set_mode((1024, 896), HWSURFACE|DOUBLEBUF)
 		self.this_windows.blit(pygame.transform.scale(self.obraz, self.this_windows.get_rect().size),(0, 0))
 		pygame.display.update()
 		self.game_clock.tick(self.fps)
@@ -198,27 +199,31 @@ class Battleships():
 				preparation_loop = True
 				self.player_move = True
 				self.computer_move = False
-				while preparation_loop is True: #TODO
+				while preparation_loop is True:
 					self.Play_music()
 					# BUTTONI
 					# GAME LOOP START
 					if self.generation_counter == 0:
 						self.ship_board_2 = self.generate_whole_board(self.ship_board_2)
 						self.generation_counter = 1
-					if self.generate_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1 and self.generation_counter_2 == 0:
+					if self.generate_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1  and self.generation_counter_2 == 0 and self.place_player_ship_counter == 0:
 						# print("generate player board")
 						# self.Clean_boards()
+						# self.ship_board_1 = []
+						for x in range(0,10):
+							for y in range(0,10):
+								self.ship_board_1[x][y] = 0
 						self.generation_counter_2 = 1
 						self.place_player_ship_counter = 20
 						# print(self.ship_board_1)
 						# self.wait_or_skip(60)
 						self.ship_board_1 = self.generate_whole_board(self.ship_board_1)
-						print("essa")
+						self.screen_refresh()
 					if self.start_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						game_loop = True
 						self.DeleteRestricions()
 						self.obraz.blit(self.preparation_background, self.preparation_background.get_rect())
-						while game_loop is True: #TODO check both ship_board for 10's and change them to 0
+						while game_loop is True:
 							self.Play_music()
 							if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 								print("Thanks for playing!")
@@ -233,17 +238,19 @@ class Battleships():
 							if self.player_move is True:
 								if pygame.mouse.get_pressed()[0] == 1:
 									mouse_pos_1 = pygame.mouse.get_pos()
+									# ratio_x = (screen_rect.width / some_surface_rect.width)
+    								# ratio_y = (screen_rect.height / some_surface_rect.height)
 									for x in range(0,10):
 										for y in range(0,10):
 											# print(mouse_pos_1)
 											check_pos = Rect(x * 38 + 578, y * 38 + 258, 38, 38)
 											if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True:
-												print(f"Add hit to computer board on x: {x}| y: {y}")
+												# print(f"Add hit to computer board on x: {x}| y: {y}")
 												if self.ship_board_2[x][y] == 3 and self.hit_board_2[x][y] != 1 and self.hit_board_2[x][y] != 2: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
 													self.hit_board_2[x][y] = 1 
 													self.player_shot_counter += 1
 													self.player_succesfull_hit_counter += 1
-													print(f"Player succesfull hits: {self.player_succesfull_hit_counter}")
+													# print(f"Player succesfull hits: {self.player_succesfull_hit_counter}")
 													self.player_move = True
 													self.computer_move = False
 												elif self.ship_board_2[x][y] == 0 and self.hit_board_2[x][y] != 1 and self.hit_board_2[x][y] != 2: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
@@ -284,17 +291,14 @@ class Battleships():
 										preparation_loop = False
 										self.screen_refresh() 
 										self.wait_or_skip(10)
-										# 34 
-									
-									# print(self.player_shot_counter_array)
 									if self.player_shot_counter_array != []:
-										for x in range(2):						 #pozycja   x             y wymiary | odejmujemy 2 od x
+										for x in range(2):
 											self.obraz.blit(self.numbers, Rect(x * 34 + 384, 685, 34, 30), Rect(self.player_shot_counter_array[x] * 34, 0, 34, 30))
 									if self.player_succesfull_hit_counter_array != []:
 										for x in range(2):
 											self.obraz.blit(self.numbers, Rect(x * 34 + 384, 730, 34, 30), Rect(self.player_succesfull_hit_counter_array[x] * 34, 0, 34, 30))
 									if self.computer_shot_counter_array != []:
-										for x in range(2):						 #pozycja   x             y wymiary | odejmujemy 2 od x
+										for x in range(2):
 											self.obraz.blit(self.numbers, Rect(x * 34 + 894, 685, 34, 30), Rect(self.computer_shot_counter_array[x] * 34, 0, 34, 30))
 									if self.computer_succesfull_hit_counter_array != []:
 										for x in range(2):
@@ -306,7 +310,7 @@ class Battleships():
 								self.player_move = True
 								for i in range(1):
 									self.Computer_targeting()
-									# self.wait_or_skip(60)
+									self.wait_or_skip(60)
 								
 								
 					# GAME LOOP END
@@ -320,13 +324,13 @@ class Battleships():
 						print("Thanks for playing!")
 						pygame.quit()
 						sys.exit()
-					# BUTTONI
+					# BUTTONS
 					# GAME PREPARATION
 					for x in range(0,10):
 						for y in range(0,10):
 							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(self.ship_board_1[x][y] * 38, 0, 38, 38))
-							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.ship_board_2[x][y] * 38, 0, 38, 38)) # DEBUG view of computer board
-							# self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(5 * 38, 0, 38, 38))
+							# self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.ship_board_2[x][y] * 38, 0, 38, 38)) # DEBUG view of computer board
+							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(5 * 38, 0, 38, 38))
 
 					# HIT REGISTER
 					if pygame.mouse.get_pressed()[0] == 1:
@@ -475,22 +479,6 @@ class Battleships():
 				if self.ship_board_2[x][y] == 10:
 					self.ship_board_2[x][y] = 0
 
-	# def Generate_ai_board(self): #TODO przycisk dla graca 
-	# 	# statki = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
-	# 	random_x = -1
-	# 	random_y = -1
-
-	# 	for x in range(20):
-	# 		not_different = True
-	# 		while not_different: # random generating coordinate until we find a free spot
-	# 			random_x = random.randint(0,9)
-	# 			random_y = random.randint(0,9)
-	# 			if self.ship_board_2[random_x][random_y] != 3 and self.ship_board_2[random_x][random_y] != 2 and self.ship_board_2[random_x][random_y] != 10:
-	# 				not_different = False
-	# 		if self.ship_board_2[random_x][random_y] != 3:
-	# 			self.ship_board_2[random_x][random_y] = 3
-	# 			self.MarkAsOccupiedFromThisField(self.ship_board_2,random_x,random_y)
-
 	def Computer_targeting(self):
 		random_x = -1
 		random_y = -1
@@ -606,6 +594,10 @@ class Battleships():
 	def generate_whole_board(self, test_grid):
 		ships_1 = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 		counter = 0
+		# self.ship_board_1 = []
+		# for x in range(0,10):
+		# 	for y in range(0,10):
+		# 		self.ship_board_1[x][y] = 0
 		
 		while counter != 20:
 			counter = 0
