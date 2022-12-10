@@ -4,7 +4,7 @@
 ## Projekt gry w Statki za pomocą biblioteki Pygame
 Celem minimum projektu jest stworzenie grywalnej gry w statki przy użyciu biblioteki pygame.
 
-Cele minimum:
+**Cele minimum:**
 
 - [X] gracz może zaznaczać pola jako statki
 
@@ -26,7 +26,7 @@ Cele minimum:
 
 
 
-Cele na moment w którym będę miał chwilę czasu:
+**Cele na moment w którym będę miał chwilę czasu:**
 - [ ] dodać animacje 
     - [ ] wybuchu przy trafeniu statku/wody
 
