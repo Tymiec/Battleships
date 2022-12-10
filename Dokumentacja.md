@@ -1,8 +1,7 @@
-# Battleships
+# Battleships - Projekt gry w Statki za pomocą biblioteki Pygame
 > Autor: Tymiec
 
-## Projekt gry w Statki za pomocą biblioteki Pygame
-Celem minimum projektu jest stworzenie grywalnej gry w statki przy użyciu biblioteki pygame.
+## *Celem minimum projektu jest stworzenie grywalnej gry w statki przy użyciu biblioteki pygame.*
 
 **Cele minimum:**
 
@@ -23,6 +22,8 @@ Celem minimum projektu jest stworzenie grywalnej gry w statki przy użyciu bibli
 - [X] generowanie grafik animacji, trafień i liczb za pomocą spriteów
 
 - [X] klikalne przyciski i pętla gry w której nie zagnieżdżamy się w nieskończoność przeskakując po menu
+
+- [X] brak często pojawiających się błędów uniemożliwiających rozgrywkę
 
 
 
