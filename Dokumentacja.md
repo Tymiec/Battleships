@@ -101,15 +101,21 @@ Wszystkie spritey rysujemy względem lewego górnego rogu okna 0,0
 
 Jako iż łatwiej jest nam zmieniać wartość liczbową niż co chwilę przeładowywać plik to używamy sprite'ów do animacji, zaznaczania pól oraz wyświetlania liczb na ekranie podsumowania.
 
-Najłatwiej działanie spritów zrozumieć patrząc na przykładowy sprite. 
-(hit_sprite)
+Najłatwiej działanie spritów zrozumieć patrząc na przykładowy sprite.
 Jeżeli popatrzymy na hit_sprite to zobaczymy że jego wysokość to 38 a długość jest wielokrotnością 38.
-Wybieramy więc kwadrat 38x38 ze sprite'a za pomocą mnożenia liczby 38. Przykładowo jeżeli zaczniemy na 0 to będziemy mieli kwadrat 38x38 odpowiadający pustemu polu.
+
+![hit_sprite](https://github.com/Tymiec/Battleships/blob/master/Assets/Images/hit_sprite.png?raw=true)
+
+Wybieramy więc kwadrat 38x38 ze sprite'a za pomocą mnożenia liczby 38. 
+Przykładowo jeżeli zaczniemy na 0 to będziemy mieli kwadrat 38x38 odpowiadający pustemu polu.
 Rysowanie planszy odbywa się w dość podobny sposób. Jako iż koordynaty [x, y] ustalamy względem lewego górnego roku okna to wystarczyło wyliczyć dystans z lewego górnego rogu do lewego górnego rogu planszy. Wtedy naszym 0,0 jest początek planszy. Mnożąc wtedy 
+
 x = wybrane_pole * 38
 y = wybrane_pole * 38
 jesteśmy w stanie schludnie generować planszę. Do tego czym wypełnimy pole sluży nam właśnie hit_sprite. 
+
 Pobieramy wartość danego pola i mnożymy wartość_pola * 38.
+
 ---
 
 ### **Prosty algorytm strzałów komputera** - ```Computer_targeting()```
@@ -136,9 +142,6 @@ System -> Wyświetlacz -> Skala i Układ i zmienić skalę na 100%
 
 Nie rozwiązany, trzeba dopisać funkcję czyszczącą wszystkie zmienne
 
-**3. Będąc w pętli przygotowań nie da się wielokrotnie wyczyścić tablicy**
-
-Rozwiązane tymczasowo dając graczowi możliwość tylko ręcznego rozmieszczania statków (bez ograniczenia ich długości do takich jakie ma komputer ale z ograniczoną ilością do 20) lub jednorazowego kliknięcia przycisku do generowania
 
 ## Napisane przy użyciu
 - Python 3.11.0
