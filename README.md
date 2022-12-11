@@ -1,6 +1,6 @@
 # Battleships
 
-## Wygląd menu
+## Menu loop
 
 ```mermaid
 %%{init: {'theme': light 'base', 'themeVariables': { 'primaryColor': '#ffcccc', 'edgeLabelBackground':'#ffffee', 'tertiaryColor': '#fff0f0'}}}%%
@@ -32,9 +32,7 @@ end
 style Intro fill:#32751B
 
 ```
-Przygotowania:
-- Poziom trudności  
-- Rozmieszczenie statków
+
 <!-- Planowane do dodania:
 - Ilość statków
 - Rozmiar planszy  -->
@@ -86,12 +84,12 @@ Chyba skorzystam z prostego trzymania left clicka.
   <color name="Blue NCS" hex="0090c1" r="0" g="144" b="193" />
   <color name="Prussian Blue" hex="003459" r="0" g="52" b="89" />
   <color name="English Lavender" hex="ac7b84" r="172" g="123" b="132" /> -->
-
+<!-- 
 - ![#fffaff](https://placehold.co/15x15/fffaff/fffaff.png) `#fffaff`
 - ![#d8315b](https://placehold.co/15x15/d8315b/d8315b.png) `#d8315b`
 - ![#0090c1](https://placehold.co/15x15/0090c1/0090c1.png) `#0090c1`
 - ![#003459](https://placehold.co/15x15/003459/003459.png) `#003459`
-- ![#ac7b84](https://placehold.co/15x15/ac7b84/ac7b84.png) `#ac7b84`
+- ![#ac7b84](https://placehold.co/15x15/ac7b84/ac7b84.png) `#ac7b84` -->
 
 ## Napisane na:
 
@@ -102,4 +100,4 @@ Chyba skorzystam z prostego trzymania left clicka.
 
 This is a learning project, nothing commercial. If you are an author of any music used here and want it deleted feel free to contact me.
 
-> Zaktualizowano 29.11.2022
+> Zaktualizowano 11.12.2022
