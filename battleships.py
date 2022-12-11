@@ -480,6 +480,9 @@ class Battleships():
 					self.ship_board_1[x][y] = 0
 				if self.ship_board_2[x][y] == 10:
 					self.ship_board_2[x][y] = 0
+				if self.ship_board_1[x][y] == 3:
+					self.hit_board_1[x][y] = 3
+		
 
 	def Computer_targeting(self):
 		random_x = -1
