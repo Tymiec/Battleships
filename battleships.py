@@ -43,7 +43,7 @@ class Battleships():
 		self.this_windows = pygame.display.set_mode((1024, 896))
 		# self.this_windows = pygame.display.set_mode((512, 448), HWSURFACE|DOUBLEBUF|NOFRAME)
 
-		icon = pygame.image.load("Assets/Images/icon.ico")
+		icon = pygame.image.load("Assets/Images/icon.png")
 
 		pygame.display.set_icon(icon)
 		pygame.display.set_caption("BATTLESHIPS")
