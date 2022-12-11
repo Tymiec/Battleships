@@ -43,9 +43,9 @@ class Battleships():
 		self.this_windows = pygame.display.set_mode((1024, 896))
 		# self.this_windows = pygame.display.set_mode((512, 448), HWSURFACE|DOUBLEBUF|NOFRAME)
 
-		icon = pygame.image.load("Assets/Images/icon.png")
+		# icon = pygame.image.load("Assets/Images/icon.png")
 
-		pygame.display.set_icon(icon)
+		# pygame.display.set_icon(icon)
 		pygame.display.set_caption("BATTLESHIPS")
 
 		self.obraz = pygame.surface.Surface(self.this_windows.get_rect().size)
@@ -104,7 +104,6 @@ class Battleships():
 		# 50 i -136
 		# GAME LOADERS
 		self.hit_sprite = pygame.image.load("Assets/Images/hit_sprite.png").convert_alpha()
-		self.aim = pygame.image.load('C:/Repo/Battleshipz/Assets/Images/aim.png').convert_alpha()
 
 		self.player_move = False
 		self.computer_move = False
