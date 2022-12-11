@@ -5,6 +5,15 @@ from random import randrange
 import pygame, sys
 from pygame.locals import *
 import button
+import sys
+import os
+
+if getattr (sys, 'frozen', False) :
+    path = sys._MEIPASS
+else :
+    path = "."
+os.chdir (path)
+
 ##
 # EXISITING BUGS:
 # dynamic button scaling does not work
@@ -43,9 +52,9 @@ class Battleships():
 		self.this_windows = pygame.display.set_mode((1024, 896))
 		# self.this_windows = pygame.display.set_mode((512, 448), HWSURFACE|DOUBLEBUF|NOFRAME)
 
-		# icon = pygame.image.load("Assets/Images/icon.png")
+		icon = pygame.image.load("Assets/Images/icon.png")
 
-		# pygame.display.set_icon(icon)
+		pygame.display.set_icon(icon)
 		pygame.display.set_caption("BATTLESHIPS")
 
 		self.obraz = pygame.surface.Surface(self.this_windows.get_rect().size)
@@ -157,7 +166,7 @@ class Battleships():
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				pygame.quit()
-				exit()
+				sys.exit()
 			elif event.type == VIDEORESIZE:
 				# self.this_windows = pygame.display.set_mode((event.size[1] * self.frame_scale, event.size[1]), HWSURFACE|DOUBLEBUF)
 				self.this_windows = pygame.display.set_mode((1024, 896), HWSURFACE|DOUBLEBUF)
@@ -205,19 +214,13 @@ class Battleships():
 					if self.generation_counter == 0:
 						self.ship_board_2 = self.generate_whole_board(self.ship_board_2)
 						self.generation_counter = 1
-					if self.generate_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1  and self.generation_counter_2 == 0 and self.place_player_ship_counter == 0:
-						# print("generate player board")
-						# self.Clean_boards()
-						# self.ship_board_1 = []
-						for x in range(0,10):
-							for y in range(0,10):
-								self.ship_board_1[x][y] = 0
-						self.generation_counter_2 = 1
+					if self.generate_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1  and self.generation_counter_2 == 0: #generate button
 						self.place_player_ship_counter = 20
-						# print(self.ship_board_1)
-						# self.wait_or_skip(60)
+						self.obraz.blit(self.preparation_background, self.preparation_background.get_rect())
 						self.ship_board_1 = self.generate_whole_board(self.ship_board_1)
-						self.screen_refresh()
+
+						# self.screen_refresh()
+						# self.wait_or_skip(60)
 					if self.start_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 						game_loop = True
 						self.DeleteRestricions()
