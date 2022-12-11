@@ -4,3 +4,4 @@
 temp.py
 /dist
 /build
+*.spec
