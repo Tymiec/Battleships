@@ -96,8 +96,20 @@ W pętli while pobieramy z tablicy ships_1 długości statków. Potem wywołujem
 ---
 
 ### **Rysowanie sprite'ów**
-TODO
 
+Wszystkie spritey rysujemy względem lewego górnego rogu okna 0,0
+
+Jako iż łatwiej jest nam zmieniać wartość liczbową niż co chwilę przeładowywać plik to używamy sprite'ów do animacji, zaznaczania pól oraz wyświetlania liczb na ekranie podsumowania.
+
+Najłatwiej działanie spritów zrozumieć patrząc na przykładowy sprite. 
+(hit_sprite)
+Jeżeli popatrzymy na hit_sprite to zobaczymy że jego wysokość to 38 a długość jest wielokrotnością 38.
+Wybieramy więc kwadrat 38x38 ze sprite'a za pomocą mnożenia liczby 38. Przykładowo jeżeli zaczniemy na 0 to będziemy mieli kwadrat 38x38 odpowiadający pustemu polu.
+Rysowanie planszy odbywa się w dość podobny sposób. Jako iż koordynaty [x, y] ustalamy względem lewego górnego roku okna to wystarczyło wyliczyć dystans z lewego górnego rogu do lewego górnego rogu planszy. Wtedy naszym 0,0 jest początek planszy. Mnożąc wtedy 
+x = wybrane_pole * 38
+y = wybrane_pole * 38
+jesteśmy w stanie schludnie generować planszę. Do tego czym wypełnimy pole sluży nam właśnie hit_sprite. 
+Pobieramy wartość danego pola i mnożymy wartość_pola * 38.
 ---
 
 ### **Prosty algorytm strzałów komputera** - ```Computer_targeting()```
