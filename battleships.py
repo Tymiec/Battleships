@@ -204,155 +204,10 @@ class Battleships():
 			if self.play_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
 				self.obraz.blit(self.preparation_background, self.preparation_background.get_rect())
 				self.screen_refresh()
-				preparation_loop = True
+				self.preparation_loop = True
 				self.player_move = True
 				self.computer_move = False
-				while preparation_loop is True:
-					self.Play_music()
-					# BUTTONI
-					# GAME LOOP START
-					if self.generation_counter == 0:
-						self.ship_board_2 = self.generate_whole_board(self.ship_board_2)
-						self.generation_counter = 1
-					if self.generate_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1  and self.generation_counter_2 == 0: #generate button
-						self.place_player_ship_counter = 20
-						self.obraz.blit(self.preparation_background, self.preparation_background.get_rect())
-						self.ship_board_1 = self.generate_whole_board(self.ship_board_1)
-
-						# self.screen_refresh()
-						# self.wait_or_skip(60)
-					if self.start_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
-						game_loop = True
-						self.DeleteRestricions()
-						self.obraz.blit(self.preparation_background, self.preparation_background.get_rect())
-						while game_loop is True:
-							self.Play_music()
-							if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
-								print("Thanks for playing!")
-								pygame.quit()
-								sys.exit()
-							if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
-								game_loop = False
-								self.screen_refresh() 
-								self.wait_or_skip(10)
-								# self.Computer_targeting() #debugging for computer targeting
-							self.screen_refresh()
-							if self.player_move is True:
-								if pygame.mouse.get_pressed()[0] == 1:
-									mouse_pos_1 = pygame.mouse.get_pos()
-									# ratio_x = (screen_rect.width / some_surface_rect.width)
-    								# ratio_y = (screen_rect.height / some_surface_rect.height)
-									for x in range(0,10):
-										for y in range(0,10):
-											# print(mouse_pos_1)
-											check_pos = Rect(x * 38 + 578, y * 38 + 258, 38, 38)
-											if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True:
-												# print(f"Add hit to computer board on x: {x}| y: {y}")
-												if self.ship_board_2[x][y] == 3 and self.hit_board_2[x][y] != 1 and self.hit_board_2[x][y] != 2: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
-													self.hit_board_2[x][y] = 1 
-													self.player_shot_counter += 1
-													self.player_succesfull_hit_counter += 1
-													# print(f"Player succesfull hits: {self.player_succesfull_hit_counter}")
-													self.player_move = True
-													self.computer_move = False
-												elif self.ship_board_2[x][y] == 0 and self.hit_board_2[x][y] != 1 and self.hit_board_2[x][y] != 2: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
-													# print(self.ship_board_2[x][y])
-													self.hit_board_2[x][y] = 2 
-													self.player_shot_counter += 1
-													self.player_move = False
-													self.computer_move = True
-												# else: #DEBUG OUTPUT
-												# 	print("You can't hit this square again")
-												# 	print(f"Position is x: {x}| y: {y}")
-												# 	print("plansza statkow 2")
-												# 	print(self.plansza_statkow_2)
-												# 	print("plansza trafien 2")
-												# 	print(self.plansza_trafien_2)
-							for x in range(0,10):
-								for y in range(0,10):
-									# test_fog_of_war = random.randint(4,6)
-									self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(self.hit_board_1[x][y] * 38, 0, 38, 38)) 
-									#TODO: dodać hit_alpha_sprite nakładany na plansze statkow gracza po strzalach komputera
-									self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.hit_board_2[x][y] * 38, 0, 38, 38))
-							self.screen_refresh()
-							if self.player_succesfull_hit_counter == 20 or self.computer_succesfull_hit_counter == self.place_player_ship_counter:
-								end_screen_loop = True
-								self.Change_number_to_array()
-								# TODO: dodać animację wygranej
-								self.wait_or_skip(10)
-								# END SCREEN LOOP
-								while end_screen_loop is True:
-									self.obraz.blit(self.end_background, self.end_background.get_rect())
-									if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
-										print("Thanks for playing!")
-										pygame.quit()
-										sys.exit()
-									if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
-										end_screen_loop = False
-										game_loop = False
-										preparation_loop = False
-										self.screen_refresh() 
-										self.wait_or_skip(10)
-									if self.player_shot_counter_array != []:
-										for x in range(2):
-											self.obraz.blit(self.numbers, Rect(x * 34 + 384, 685, 34, 30), Rect(self.player_shot_counter_array[x] * 34, 0, 34, 30))
-									if self.player_succesfull_hit_counter_array != []:
-										for x in range(2):
-											self.obraz.blit(self.numbers, Rect(x * 34 + 384, 730, 34, 30), Rect(self.player_succesfull_hit_counter_array[x] * 34, 0, 34, 30))
-									if self.computer_shot_counter_array != []:
-										for x in range(2):
-											self.obraz.blit(self.numbers, Rect(x * 34 + 894, 685, 34, 30), Rect(self.computer_shot_counter_array[x] * 34, 0, 34, 30))
-									if self.computer_succesfull_hit_counter_array != []:
-										for x in range(2):
-											self.obraz.blit(self.numbers, Rect(x * 34 + 894, 730, 34, 30), Rect(self.computer_succesfull_hit_counter_array[x] * 34, 0, 34, 30))	
-									self.screen_refresh()
-								# END SCREEN LOOP
-							if self.computer_move is True:
-								self.computer_move = False
-								self.player_move = True
-								for i in range(1):
-									self.Computer_targeting()
-									self.wait_or_skip(60)
-								
-								
-					# GAME LOOP END
-					if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
-						self.Clean_boards()
-						self.generation_counter = 0
-						self.generation_counter_2 = 0
-						preparation_loop = False
-
-					if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
-						print("Thanks for playing!")
-						pygame.quit()
-						sys.exit()
-					# BUTTONS
-					# GAME PREPARATION
-					for x in range(0,10):
-						for y in range(0,10):
-							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(self.ship_board_1[x][y] * 38, 0, 38, 38))
-							# self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.ship_board_2[x][y] * 38, 0, 38, 38)) # DEBUG view of computer board
-							self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(5 * 38, 0, 38, 38))
-
-					# HIT REGISTER
-					if pygame.mouse.get_pressed()[0] == 1:
-						mouse_pos_1 = pygame.mouse.get_pos()
-						for x in range(0,10):
-							for y in range(0,10):
-								# print(mouse_pos_1)
-								check_pos = Rect(x * 38 + 66, y * 38 + 258, 38, 38)
-								# self.obraz.blit(self.hit_sprite,Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(5 * 38, 0, 38, 38))
-								if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True and self.ship_board_1[x][y] != 10 and self.ship_board_1[x][y] != 3 and self.place_player_ship_counter < 20:
-									# print(f"Add ship to player board on x: {x}| y: {y}")
-									self.ship_board_1[x][y] = 3 # zmiana kwadratu na statek
-									self.MarkAsOccupiedFromThisField(self.ship_board_1, x, y)
-									self.place_player_ship_counter += 1 
-									# print(f"Ships placed by player: {self.place_player_ship_counter}")
-					# HIT REGISTER
-					# GAME PREPARATION
-
-					self.screen_refresh()
-				# PREPARATION PHASE
+				self.PreparationLoop()
 			# BUTTON PLAY
 
 			# # BUTTON OPTIONS
@@ -628,6 +483,156 @@ class Battleships():
 					if test_grid[x][y] == 3:
 						counter += 1
 		return test_grid
+
+	def PreparationLoop(self):
+		while self.preparation_loop is True:
+			self.Play_music()
+			# BUTTONI
+			# GAME LOOP START
+			if self.generation_counter == 0:
+				self.ship_board_2 = self.generate_whole_board(self.ship_board_2)
+				self.generation_counter = 1
+			if self.generate_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1  and self.generation_counter_2 == 0: #generate button
+				self.place_player_ship_counter = 20
+				self.obraz.blit(self.preparation_background, self.preparation_background.get_rect())
+				self.ship_board_1 = self.generate_whole_board(self.ship_board_1)
+				print(self.ship_board_1)
+				# self.screen_refresh()
+				# self.wait_or_skip(60)
+			if self.start_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+				self.game_loop = True
+				self.DeleteRestricions()
+				self.obraz.blit(self.preparation_background, self.preparation_background.get_rect())
+				self.GameLoop()
+			# GAME LOOP END
+			if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+				self.Clean_boards()
+				self.generation_counter = 0
+				self.generation_counter_2 = 0
+				self.preparation_loop = False
+			if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+				print("Thanks for playing!")
+				pygame.quit()
+				sys.exit()
+			# BUTTONS
+			# GAME PREPARATION
+			for x in range(0,10):
+				for y in range(0,10):
+					self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(self.ship_board_1[x][y] * 38, 0, 38, 38))
+					# self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.ship_board_2[x][y] * 38, 0, 38, 38)) # DEBUG view of computer board
+					self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(5 * 38, 0, 38, 38))
+			# HIT REGISTER
+			if pygame.mouse.get_pressed()[0] == 1:
+				mouse_pos_1 = pygame.mouse.get_pos()
+				for x in range(0,10):
+					for y in range(0,10):
+						# print(mouse_pos_1)
+						check_pos = Rect(x * 38 + 66, y * 38 + 258, 38, 38)
+						# self.obraz.blit(self.hit_sprite,Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(5 * 38, 0, 38, 38))
+						if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True and self.ship_board_1[x][y] != 10 and self.ship_board_1[x][y] != 3 and self.place_player_ship_counter < 20:
+							# print(f"Add ship to player board on x: {x}| y: {y}")
+							self.ship_board_1[x][y] = 3 # zmiana kwadratu na statek
+							self.MarkAsOccupiedFromThisField(self.ship_board_1, x, y)
+							self.place_player_ship_counter += 1 
+							# print(f"Ships placed by player: {self.place_player_ship_counter}")
+			# HIT REGISTER
+			# GAME PREPARATION
+			self.screen_refresh()
+		# PREPARATION PHASE
+	
+	def GameLoop(self):
+		while self.game_loop is True:
+			self.Play_music()
+			if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+				print("Thanks for playing!")
+				pygame.quit()
+				sys.exit()
+			if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+				self.game_loop = False
+				self.screen_refresh() 
+				self.wait_or_skip(10)
+				# self.Computer_targeting() #debugging for computer targeting
+			self.screen_refresh()
+			if self.player_move is True:
+				if pygame.mouse.get_pressed()[0] == 1:
+					mouse_pos_1 = pygame.mouse.get_pos()
+					# ratio_x = (screen_rect.width / some_surface_rect.width)
+    				# ratio_y = (screen_rect.height / some_surface_rect.height)
+					for x in range(0,10):
+						for y in range(0,10):
+							# print(mouse_pos_1)
+							check_pos = Rect(x * 38 + 578, y * 38 + 258, 38, 38)
+							if check_pos.collidepoint(mouse_pos_1[0], mouse_pos_1[1]) == True:
+								# print(f"Add hit to computer board on x: {x}| y: {y}")
+								if self.ship_board_2[x][y] == 3 and self.hit_board_2[x][y] != 1 and self.hit_board_2[x][y] != 2: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
+									self.hit_board_2[x][y] = 1 
+									self.player_shot_counter += 1
+									self.player_succesfull_hit_counter += 1
+									# print(f"Player succesfull hits: {self.player_succesfull_hit_counter}")
+									self.player_move = True
+									self.computer_move = False
+								elif self.ship_board_2[x][y] == 0 and self.hit_board_2[x][y] != 1 and self.hit_board_2[x][y] != 2: #sprawdzamy czy jest tam statek i czy juz nie strzelalismy
+									# print(self.ship_board_2[x][y])
+									self.hit_board_2[x][y] = 2 
+									self.player_shot_counter += 1
+									self.player_move = False
+									self.computer_move = True
+								# else: #DEBUG OUTPUT
+								# 	print("You can't hit this square again")
+								# 	print(f"Position is x: {x}| y: {y}")
+								# 	print("plansza statkow 2")
+								# 	print(self.plansza_statkow_2)
+								# 	print("plansza trafien 2")
+								# 	print(self.plansza_trafien_2)
+			for x in range(0,10):
+				for y in range(0,10):
+					# test_fog_of_war = random.randint(4,6)
+					self.obraz.blit(self.hit_sprite, Rect(x * 38 + 66, y * 38 + 258, 38, 38), Rect(self.hit_board_1[x][y] * 38, 0, 38, 38)) 
+					#TODO: dodać hit_alpha_sprite nakładany na plansze statkow gracza po strzalach komputera
+					self.obraz.blit(self.hit_sprite, Rect(x * 38 + 578, y * 38 + 258, 38, 38), Rect(self.hit_board_2[x][y] * 38, 0, 38, 38))
+			self.screen_refresh()
+			if self.player_succesfull_hit_counter == 20 or self.computer_succesfull_hit_counter == self.place_player_ship_counter:
+				self.end_screen_loop = True
+				self.Change_number_to_array()
+				# TODO: dodać animację wygranej
+				self.wait_or_skip(10)
+				# END SCREEN LOOP
+				self.SummaryLoop()
+				# END SCREEN LOOP
+			if self.computer_move is True:
+				self.computer_move = False
+				self.player_move = True
+				for i in range(1):
+					self.Computer_targeting()
+					self.wait_or_skip(60)
+								
+
+	def SummaryLoop(self):
+		while self.end_screen_loop is True:
+			self.obraz.blit(self.end_background, self.end_background.get_rect())
+			if self.exit_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+				print("Thanks for playing!")
+				pygame.quit()
+				sys.exit()
+			if self.back_button.draw(self.obraz) and pygame.mouse.get_pressed()[0] == 1:
+				self.end_screen_loop = False
+				self.game_loop = False
+				self.preparation_loop = False
+				self.screen_refresh() 
+				self.wait_or_skip(10)
+			if self.player_shot_counter_array != []:
+				for x in range(2):
+					self.obraz.blit(self.numbers, Rect(x * 34 + 384, 685, 34, 30), Rect(self.player_shot_counter_array[x] * 34, 0, 34, 30))
+			if self.player_succesfull_hit_counter_array != []:
+				for x in range(2):
+					self.obraz.blit(self.numbers, Rect(x * 34 + 384, 730, 34, 30), Rect(self.player_succesfull_hit_counter_array[x] * 34, 0, 34, 30))
+			if self.computer_shot_counter_array != []:
+				for x in range(2):
+					self.obraz.blit(self.numbers, Rect(x * 34 + 894, 685, 34, 30), Rect(self.computer_shot_counter_array[x] * 34, 0, 34, 30))
+			if self.computer_succesfull_hit_counter_array != []:
+				for x in range(2):
+					self.obraz.blit(self.numbers, Rect(x * 34 + 894, 730, 34, 30), Rect(self.computer_succesfull_hit_counter_array[x] * 34, 0, 34, 30))	
+			self.screen_refresh()
 
 def Main():
 	battleships = Battleships()
