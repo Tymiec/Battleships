@@ -5,3 +5,5 @@ temp.py
 /dist
 /build
 *.spec
+/.idea
+/.vscode
